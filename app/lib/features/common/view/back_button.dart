@@ -7,7 +7,9 @@ import 'package:housecrush_app/features/profile/data/profile_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 class GoBackButton extends StatelessWidget {
-  const GoBackButton({Key? key}) : super(key: key);
+  const GoBackButton({this.back, Key? key}) : super(key: key);
+
+  final VoidCallback? back;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,11 @@ class GoBackButton extends StatelessWidget {
               color: hcDark[300],
               child: InkWell(
                 onTap: () {
-                  context.beamBack();
+                  if (back != null) {
+                    back!();
+                  } else {
+                    context.beamBack();
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

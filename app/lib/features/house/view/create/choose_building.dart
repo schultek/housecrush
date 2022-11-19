@@ -10,10 +10,11 @@ import '../../domain/locations.dart';
 import '../render_house.dart';
 
 class ChooseBuilding extends StatefulWidget {
-  ChooseBuilding({required this.creator, required this.onBuilding, Key? key}) : super(key: key);
+  ChooseBuilding({required this.creator, required this.onBuilding, this.back, Key? key}) : super(key: key);
 
   final HouseCreator creator;
   final void Function(String) onBuilding;
+  final VoidCallback? back;
 
   @override
   State<ChooseBuilding> createState() => _ChooseBuildingState();
@@ -21,7 +22,17 @@ class ChooseBuilding extends StatefulWidget {
 
 class _ChooseBuildingState extends State<ChooseBuilding> {
   String building = buildings.keys.first;
+  late PageController controller;
 
+
+  @override
+  void initState() {
+    controller = PageController(
+        initialPage: widget.creator.building != null
+            ? buildings.keys.toList().indexOf(widget.creator.building!)
+            : 0);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,7 +40,7 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GoBackButton(),
+          GoBackButton(back: widget.back),
           Text(
             'Choose a building.',
             style: Theme.of(context).textTheme.displayLarge,
@@ -55,6 +66,7 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                       eco: widget.creator.eco,
                     ),
                     PageView(
+                      controller: controller,
                     onPageChanged: (value) {
                       setState(() {
                         building = buildings.keys.toList()[value];
@@ -72,8 +84,12 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                     top: 0,
                     bottom: 0,
                     child: Center(
-                      child: Icon(Icons.keyboard_arrow_left, size: 50,
-                      color: hcDark[800],)
+                      child: InkWell(
+                          onTap: () {
+                            controller.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                          },
+                          child: Icon(Icons.keyboard_arrow_left, size: 50,
+                      color: hcDark[800],),),
                     ),
                   ),
                     Positioned(
@@ -81,8 +97,12 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                       top: 0,
                       bottom: 0,
                       child: Center(
-                          child: Icon(Icons.keyboard_arrow_right, size: 50,
-                            color: hcDark[800],)
+                          child: InkWell(
+                              onTap: () {
+                                controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              },
+                              child: Icon(Icons.keyboard_arrow_right, size: 50,
+                            color: hcDark[800],),),
                       ),
                     )
                   ],

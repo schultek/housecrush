@@ -30,7 +30,6 @@ class DiscoverPage extends StatelessWidget {
               ),
             ),
             const SliverPadding(padding: EdgeInsets.only(top: 20)),
-
             SliverGrid.count(
               crossAxisCount: 2,
               mainAxisSpacing: 20,
@@ -45,23 +44,41 @@ class DiscoverPage extends StatelessWidget {
                   children: [
                     HouseCard(house: house),
                     Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                  isLiked ? Icons.favorite : Icons.favorite_border,
-                              color: hcRed),
-                              onPressed: () {
-                                context
-                                    .read(discoverController.notifier)
-                                    .likeHouse(house, !isLiked);
-                              },
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: InkWell(
+                          onTap: () {
+                            context
+                                .read(discoverController.notifier)
+                                .likeHouse(house, !isLiked);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: hcDark[200]!.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            Text(house.likes.length.toString())
-                          ],
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(width: 2),
+                                Icon(
+                                    isLiked
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: hcRed),
+                                const SizedBox(width: 2),
+                                Text(
+                                  house.likes.length.toString(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(width: 4),
+                              ],
+                            ),
+                          ),
                         ),
-
+                      ),
                     ),
                   ],
                 );

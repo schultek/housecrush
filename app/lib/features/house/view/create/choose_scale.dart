@@ -10,11 +10,12 @@ import '../../domain/locations.dart';
 import '../render_house.dart';
 
 class ChooseScale extends StatefulWidget {
-  ChooseScale({required this.creator, required this.onScale, Key? key})
+  ChooseScale({required this.creator, required this.onScale, this.back, Key? key})
       : super(key: key);
 
   final HouseCreator creator;
   final void Function(double) onScale;
+  final VoidCallback? back;
 
   @override
   State<ChooseScale> createState() => _ChooseScaleState();
@@ -23,6 +24,13 @@ class ChooseScale extends StatefulWidget {
 class _ChooseScaleState extends State<ChooseScale> {
   double scale = 1;
 
+
+  @override
+  void initState() {
+    scale = widget.creator.scale ?? 1;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,7 +38,7 @@ class _ChooseScaleState extends State<ChooseScale> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GoBackButton(),
+          GoBackButton(back: widget.back),
           Text(
             'Set the scale.',
             style: Theme.of(context).textTheme.displayLarge,

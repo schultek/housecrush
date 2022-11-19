@@ -7,11 +7,12 @@ import '../../domain/locations.dart';
 import '../render_house.dart';
 
 class ChooseEco extends StatefulWidget {
-  ChooseEco({required this.creator, required this.onEco, Key? key})
+  ChooseEco({required this.creator, required this.onEco, this.back, Key? key})
       : super(key: key);
 
   final HouseCreator creator;
   final void Function(int) onEco;
+  final VoidCallback? back;
 
   @override
   State<ChooseEco> createState() => _ChooseEcoState();
@@ -21,13 +22,19 @@ class _ChooseEcoState extends State<ChooseEco> {
   int eco = 0;
 
   @override
+  void initState() {
+    eco = widget.creator.eco ?? 0;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GoBackButton(),
+          GoBackButton(back: widget.back),
           Text(
             'Set Eco Factor.',
             style: Theme.of(context).textTheme.displayLarge,

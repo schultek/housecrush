@@ -7,11 +7,12 @@ import '../../domain/house.dart';
 import '../../domain/locations.dart';
 
 class ChooseLocation extends StatefulWidget {
-  ChooseLocation({required this.onLocation, required this.creator, Key? key})
+  ChooseLocation({required this.onLocation, required this.creator, this.back, Key? key})
       : super(key: key);
 
   final void Function(String) onLocation;
   final HouseCreator creator;
+  final VoidCallback? back;
 
   @override
   State<ChooseLocation> createState() => _ChooseLocationState();
@@ -37,7 +38,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GoBackButton(),
+          GoBackButton(back: widget.back),
           Text(
             'Choose a location.',
             style: Theme.of(context).textTheme.displayLarge,
@@ -75,23 +76,32 @@ class _ChooseLocationState extends State<ChooseLocation> {
                       top: 0,
                       bottom: 0,
                       child: Center(
-                          child: Icon(
+                          child: InkWell(
+                            onTap: () {
+                              controller.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                            },
+                            child: Icon(
                         Icons.keyboard_arrow_left,
                         size: 50,
                         color: hcDark[800],
-                      )),
+                      ),
+                          )),
                     ),
                     Positioned(
                       right: 0,
                       top: 0,
                       bottom: 0,
                       child: Center(
-                          child: Icon(
+                          child: InkWell(
+                              onTap: () {
+                                controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              },
+                              child: Icon(
                         Icons.keyboard_arrow_right,
                         size: 50,
-                        color: hcDark[800],
-                      )),
-                    )
+                        color: hcDark[800],),
+                      ),),
+                    ),
                   ],
                 ),
               ),

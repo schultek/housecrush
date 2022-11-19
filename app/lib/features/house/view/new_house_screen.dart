@@ -29,6 +29,14 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
     context.beamToReplacementNamed('/house/${house.id}', data: house);
   }
 
+
+  void back() {
+    if (step > 0) {
+      setState(() {
+        step--;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -40,7 +48,7 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
         setState(() {
           step++;
         });
-      });
+      }, back: back,);
     } else if (step == 1) {
       child = ChooseBuilding(
           creator: creator,
@@ -49,7 +57,7 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
             setState(() {
               step++;
             });
-          },);
+          }, back: back,);
     } else if (step == 2) {
       child = ChooseScale(
         creator: creator,
@@ -58,7 +66,7 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
           setState(() {
             step++;
           });
-        },);
+        }, back: back,);
     } else if (step == 3) {
       child = ChooseSpecials(
         creator: creator,
@@ -67,14 +75,14 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
           setState(() {
             step++;
           });
-        },);
+        }, back: back,);
     } else if (step == 4) {
       child = ChooseEco(
         creator: creator,
         onEco: (value) {
           creator.eco = value;
           finish();
-        },);
+        }, back: back,);
     } else {
       child = Container();
     }

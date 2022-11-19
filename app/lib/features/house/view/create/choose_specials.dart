@@ -11,11 +11,12 @@ import '../../domain/locations.dart';
 import '../render_house.dart';
 
 class ChooseSpecials extends StatefulWidget {
-  ChooseSpecials({required this.creator, required this.onSpecials, Key? key})
+  ChooseSpecials({required this.creator, required this.onSpecials, this.back, Key? key})
       : super(key: key);
 
   final HouseCreator creator;
   final void Function(List<String>) onSpecials;
+  final VoidCallback? back;
 
   @override
   State<ChooseSpecials> createState() => _ChooseSpecialsState();
@@ -25,13 +26,19 @@ class _ChooseSpecialsState extends State<ChooseSpecials> {
   List<String> specials = [];
 
   @override
+  void initState() {
+    specials = widget.creator.specials ?? [];
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GoBackButton(),
+          GoBackButton(back: widget.back),
           Text(
             'Select Specials.',
             style: Theme.of(context).textTheme.displayLarge,

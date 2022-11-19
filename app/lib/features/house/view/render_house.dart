@@ -33,7 +33,7 @@ class RenderHouse extends StatelessWidget {
           if (building != null)
             Positioned.fill(
               child: Transform.scale(
-                scale: scale,
+                scale: scale ?? 1,
                 alignment: Alignment.bottomCenter,
                 origin: Offset(0, -constraints.maxHeight / 3),
                 child: Image.network(
