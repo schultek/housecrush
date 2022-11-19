@@ -12,5 +12,8 @@ class House with Mappable {
   final String owner;
   final List<String> likes;
 
-  House({required this.id, required this.owner, this.likes = const []});
+  final String? location;
+
+  House({required this.id, required this.owner, this.likes = const [],
+  this.location});
 }

@@ -11,14 +11,20 @@ class NewHouseController {
 
   final Ref ref;
 
-  Future<void> createNewHouse() async {
+  Future<void> createNewHouse({required String location}) async {
 
     var firestore = await ref.read(firestoreRepository.future);
 
     await firestore.collection('houses').add({
       'owner': ref.read(userIdRepository)!,
+      'location': location,
     });
 
+  }
+
+  Future<void> deleteHouse(String id) async {
+    var firestore = await ref.read(firestoreRepository.future);
+    await firestore.collection('houses').doc(id).delete();
   }
 
 }

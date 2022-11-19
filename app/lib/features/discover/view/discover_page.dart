@@ -5,6 +5,7 @@ import 'package:housecrush_app/features/auth/data/auth_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../house/domain/house.dart';
+import '../../house/view/house_card.dart';
 import '../controllers/discover_controller.dart';
 
 class DiscoverPage extends StatelessWidget {
@@ -40,29 +41,29 @@ class DiscoverPage extends StatelessWidget {
                 var isLiked =
                     house.likes.contains(context.read(userIdRepository)!);
 
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    color: hcDark[200],
-                  ),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                              isLiked ? Icons.favorite : Icons.favorite_border,
-                          color: hcRed),
-                          onPressed: () {
-                            context
-                                .read(discoverController.notifier)
-                                .likeHouse(house, !isLiked);
-                          },
+                return Stack(
+                  children: [
+                    HouseCard(house: house),
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                  isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: hcRed),
+                              onPressed: () {
+                                context
+                                    .read(discoverController.notifier)
+                                    .likeHouse(house, !isLiked);
+                              },
+                            ),
+                            Text(house.likes.length.toString())
+                          ],
                         ),
-                        Text(house.likes.length.toString())
-                      ],
+
                     ),
-                  ),
+                  ],
                 );
               }).toList(),
             ),

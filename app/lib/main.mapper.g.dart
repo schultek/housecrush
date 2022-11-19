@@ -59,15 +59,15 @@ class HouseMapper extends BaseMapper<House> {
 
   @override Function get decoder => decode;
   House decode(dynamic v) => checked(v, (Map<String, dynamic> map) => fromMap(map));
-  House fromMap(Map<String, dynamic> map) => House(id: Mapper.i.$get(map, 'id'), owner: Mapper.i.$get(map, 'owner'), likes: Mapper.i.$getOpt(map, 'likes') ?? const []);
+  House fromMap(Map<String, dynamic> map) => House(id: Mapper.i.$get(map, 'id'), owner: Mapper.i.$get(map, 'owner'), likes: Mapper.i.$getOpt(map, 'likes') ?? const [], location: Mapper.i.$getOpt(map, 'location'));
 
   @override Function get encoder => (House v) => encode(v);
   dynamic encode(House v) => toMap(v);
-  Map<String, dynamic> toMap(House h) => {'id': Mapper.i.$enc(h.id, 'id'), 'owner': Mapper.i.$enc(h.owner, 'owner'), 'likes': Mapper.i.$enc(h.likes, 'likes')};
+  Map<String, dynamic> toMap(House h) => {'id': Mapper.i.$enc(h.id, 'id'), 'owner': Mapper.i.$enc(h.owner, 'owner'), 'likes': Mapper.i.$enc(h.likes, 'likes'), 'location': Mapper.i.$enc(h.location, 'location')};
 
-  @override String stringify(House self) => 'House(id: ${Mapper.asString(self.id)}, owner: ${Mapper.asString(self.owner)}, likes: ${Mapper.asString(self.likes)})';
-  @override int hash(House self) => Mapper.hash(self.id) ^ Mapper.hash(self.owner) ^ Mapper.hash(self.likes);
-  @override bool equals(House self, House other) => Mapper.isEqual(self.id, other.id) && Mapper.isEqual(self.owner, other.owner) && Mapper.isEqual(self.likes, other.likes);
+  @override String stringify(House self) => 'House(id: ${Mapper.asString(self.id)}, owner: ${Mapper.asString(self.owner)}, likes: ${Mapper.asString(self.likes)}, location: ${Mapper.asString(self.location)})';
+  @override int hash(House self) => Mapper.hash(self.id) ^ Mapper.hash(self.owner) ^ Mapper.hash(self.likes) ^ Mapper.hash(self.location);
+  @override bool equals(House self, House other) => Mapper.isEqual(self.id, other.id) && Mapper.isEqual(self.owner, other.owner) && Mapper.isEqual(self.likes, other.likes) && Mapper.isEqual(self.location, other.location);
 
   @override Function get typeFactory => (f) => f<House>();
 }
@@ -80,14 +80,14 @@ extension HouseMapperExtension  on House {
 
 abstract class HouseCopyWith<$R> {
   factory HouseCopyWith(House value, Then<House, $R> then) = _HouseCopyWithImpl<$R>;
-  $R call({String? id, String? owner, List<String>? likes});
+  $R call({String? id, String? owner, List<String>? likes, String? location});
   $R apply(House Function(House) transform);
 }
 
 class _HouseCopyWithImpl<$R> extends BaseCopyWith<House, $R> implements HouseCopyWith<$R> {
   _HouseCopyWithImpl(House value, Then<House, $R> then) : super(value, then);
 
-  @override $R call({String? id, String? owner, List<String>? likes}) => $then(House(id: id ?? $value.id, owner: owner ?? $value.owner, likes: likes ?? $value.likes));
+  @override $R call({String? id, String? owner, List<String>? likes, Object? location = $none}) => $then(House(id: id ?? $value.id, owner: owner ?? $value.owner, likes: likes ?? $value.likes, location: or(location, $value.location)));
 }
 
 

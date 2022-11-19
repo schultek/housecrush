@@ -5,19 +5,25 @@ import 'package:riverpod_context/riverpod_context.dart';
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
 import '../../controllers/new_house_controller.dart';
-import '../../domain/locations.dart';
 
-class ChooseLocation extends StatefulWidget {
-  ChooseLocation({required this.onLocation, Key? key}) : super(key: key);
+class ChooseBuilding extends StatefulWidget {
+  ChooseBuilding({required this.onLocation, Key? key}) : super(key: key);
 
   final void Function(String) onLocation;
 
   @override
-  State<ChooseLocation> createState() => _ChooseLocationState();
+  State<ChooseBuilding> createState() => _ChooseBuildingState();
 }
 
-class _ChooseLocationState extends State<ChooseLocation> {
-
+class _ChooseBuildingState extends State<ChooseBuilding> {
+  static final locations = {
+    'arctic': ['In the Arctic', 'Arktis916.png'],
+    'mountain': ['On a mountain', 'Berg916.png'],
+    'bridge': ['Under a bridge', 'Brucke916.png'],
+    'island': ['A private island', 'Insel916.png'],
+    'slum': ['At the slum', 'Slum916.png'],
+    'city': ['In the city', 'Stadt916.png'],
+  };
 
   String location = locations.keys.first;
 
@@ -28,7 +34,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       child: Column(
         children: [
           Text(
-            'Choose a location.',
+            'Choose a building.',
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 40),
@@ -88,7 +94,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
           ActionButton(
             label: 'Next',
             onPressed: () async {
-              widget.onLocation(location);
+              widget.onLocation('beach');
             },
           ),
         ],

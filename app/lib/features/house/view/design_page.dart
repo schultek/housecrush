@@ -2,19 +2,19 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
-import 'package:housecrush_app/features/common/view/action_button.dart';
+import 'package:housecrush_app/features/house/controllers/new_house_controller.dart';
 import 'package:housecrush_app/features/house/data/houses_repository.dart';
 import 'package:housecrush_app/features/profile/data/profile_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../profile/view/profile_button.dart';
+import 'house_card.dart';
 
 class DesignPage extends StatelessWidget {
   const DesignPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     var houses = context.watch(housesRepository).valueOrNull ?? [];
 
     return Scaffold(
@@ -24,7 +24,8 @@ class DesignPage extends StatelessWidget {
         },
         backgroundColor: hcRed,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        child: const Icon(Icons.add),),
+        child: const Icon(Icons.add),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -33,9 +34,10 @@ class DesignPage extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: context.watch(hasProfileRepository).valueOrNull ?? false
-                      ? const ProfileButton()
-                      : const SizedBox(height: 32),
+                  child:
+                      context.watch(hasProfileRepository).valueOrNull ?? false
+                          ? const ProfileButton()
+                          : const SizedBox(height: 32),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -45,25 +47,30 @@ class DesignPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 if (houses.isEmpty)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 80),
-                    child: Center(
-                      child: Opacity(
-                        opacity: 0.4,
-                        child: Text('Add a house by cicking \'+\'',
-                        style: Theme.of(context).textTheme.bodySmall),
-                      ),
-                    )
-                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 80),
+                      child: Center(
+                        child: Opacity(
+                          opacity: 0.4,
+                          child: Text('Add a house by cicking \'+\'',
+                              style: Theme.of(context).textTheme.bodySmall),
+                        ),
+                      )),
                 ...houses.map((house) {
                   return Container(
-                    height: 100,
                     width: double.infinity,
                     margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      color: hcDark[200],
+                    child: Dismissible(
+                      key: ValueKey(house.id),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (_) async {
+                        await context.read(newHouseController).deleteHouse(house.id);
+                        return true;
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: HouseCard(house: house),
+                      ),
                     ),
-                    child: const Center(child: Text('House')),
                   );
                 }),
               ],

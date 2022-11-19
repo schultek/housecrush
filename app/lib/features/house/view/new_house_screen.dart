@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:housecrush_app/features/house/view/create/choose_building.dart';
 import 'package:housecrush_app/features/house/view/create/choose_location.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
@@ -19,7 +20,7 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
   String? location;
 
   Future<void> finish() async {
-    await context.read(newHouseController).createNewHouse();
+    await context.read(newHouseController).createNewHouse(location: location!);
     context.beamToReplacementNamed('/design');
   }
 
@@ -34,14 +35,19 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
           step++;
         });
       });
+    } else if (step == 1) {
+child = ChooseBuilding(onLocation: (value) {
+  finish();
+});
     } else {
       child = Container();
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: child,
-      ),
-    );
+      return Scaffold(
+        body: SafeArea(
+          child: child,
+        ),
+      );
+
   }
 }
