@@ -4,7 +4,7 @@ import 'package:housecrush_app/features/house/view/create/choose_building.dart';
 import 'package:housecrush_app/features/house/view/create/choose_location.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
-import '../controllers/new_house_controller.dart';
+import '../controllers/house_controller.dart';
 
 class NewHouseScreen extends StatefulWidget {
   const NewHouseScreen({Key? key}) : super(key: key);
@@ -18,9 +18,10 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
   int step = 0;
 
   String? location;
+  String? building;
 
   Future<void> finish() async {
-    await context.read(newHouseController).createNewHouse(location: location!);
+    await context.read(houseController).createNewHouse(location: location!, building: building!);
     context.beamToReplacementNamed('/design');
   }
 
@@ -36,7 +37,8 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
         });
       });
     } else if (step == 1) {
-child = ChooseBuilding(onLocation: (value) {
+child = ChooseBuilding(onBuilding: (value) {
+  building = value;
   finish();
 });
     } else {

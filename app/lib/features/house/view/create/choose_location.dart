@@ -1,10 +1,7 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
-import '../../controllers/new_house_controller.dart';
 import '../../domain/locations.dart';
 
 class ChooseLocation extends StatefulWidget {

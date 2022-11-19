@@ -2,12 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
-import 'package:housecrush_app/features/house/controllers/new_house_controller.dart';
 import 'package:housecrush_app/features/house/data/houses_repository.dart';
 import 'package:housecrush_app/features/profile/data/profile_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../profile/view/profile_button.dart';
+import '../controllers/house_controller.dart';
 import 'house_card.dart';
 
 class DesignPage extends StatelessWidget {
@@ -63,7 +63,7 @@ class DesignPage extends StatelessWidget {
                       key: ValueKey(house.id),
                       direction: DismissDirection.endToStart,
                       confirmDismiss: (_) async {
-                        await context.read(newHouseController).deleteHouse(house.id);
+                        await context.read(houseController).deleteHouse(house.id);
                         return true;
                       },
                       child: AspectRatio(

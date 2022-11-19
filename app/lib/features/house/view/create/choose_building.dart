@@ -4,28 +4,19 @@ import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
-import '../../controllers/new_house_controller.dart';
+import '../../domain/locations.dart';
 
 class ChooseBuilding extends StatefulWidget {
-  ChooseBuilding({required this.onLocation, Key? key}) : super(key: key);
+  ChooseBuilding({required this.onBuilding, Key? key}) : super(key: key);
 
-  final void Function(String) onLocation;
+  final void Function(String) onBuilding;
 
   @override
   State<ChooseBuilding> createState() => _ChooseBuildingState();
 }
 
 class _ChooseBuildingState extends State<ChooseBuilding> {
-  static final locations = {
-    'arctic': ['In the Arctic', 'Arktis916.png'],
-    'mountain': ['On a mountain', 'Berg916.png'],
-    'bridge': ['Under a bridge', 'Brucke916.png'],
-    'island': ['A private island', 'Insel916.png'],
-    'slum': ['At the slum', 'Slum916.png'],
-    'city': ['In the city', 'Stadt916.png'],
-  };
-
-  String location = locations.keys.first;
+  String building = buildings.keys.first;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +43,12 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                   children: [PageView(
                     onPageChanged: (value) {
                       setState(() {
-                        location = locations.keys.toList()[value];
+                        building = buildings.keys.toList()[value];
                       });
                     },
                     children: [
-                      for (var loc in locations.keys)
-                        Image.network('https://housecrush.schultek.de/images/locations/${locations[loc]![1]}',
+                      for (var loc in buildings.keys)
+                        Image.network('https://housecrush.schultek.de/images/buildings/${buildings[loc]![1]}',
                         fit: BoxFit.cover,
                         ),
                     ],
@@ -87,14 +78,14 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
           ),
           const SizedBox(height: 10),
           Text(
-            locations[location]![0],
+            buildings[building]![0],
             style: Theme.of(context).textTheme.displaySmall,
           ),
           const SizedBox(height: 40),
           ActionButton(
-            label: 'Next',
+            label: 'Create',
             onPressed: () async {
-              widget.onLocation('beach');
+              widget.onBuilding(building);
             },
           ),
         ],
