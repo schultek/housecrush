@@ -31,33 +31,33 @@ class _SignInScreenState extends State<SignInScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(40),
-              child: Image.network('https://housecrush.schultek.de/images/HouseCrushSchriftzug.png'),
+              child: Image.network(
+                  'https://housecrush.schultek.de/images/HouseCrushSchriftzug.png'),
             ),
             const SizedBox(height: 100),
-            if (context.watch(userNameRepository)?.isEmpty ?? true)
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  hintText: 'What\'s your name?',
-                  hintStyle: const TextStyle(color: Colors.black),
+            TextFormField(
+              initialValue: name,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
                 ),
-                onChanged: (text) {
-                  setState(() {
-                    name = text;
-                  });
-                },
+                hintText: 'What\'s your name?',
+                hintStyle: const TextStyle(color: Colors.black),
               ),
+              onChanged: (text) {
+                setState(() {
+                  name = text;
+                });
+              },
+            ),
             const SizedBox(height: 30),
-            ActionButton(label: 'Get Started',
-
+            ActionButton(
+              label: 'Get Started',
               onPressed: name.isNotEmpty
                   ? () {
                       context.read(signInController.notifier).signIn(name);
                     }
                   : null,
-
             ),
           ],
         ),

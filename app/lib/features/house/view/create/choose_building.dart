@@ -60,10 +60,6 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                   children: [
                     RenderHouse(
                       location: widget.creator.location,
-                      building: widget.creator.building,
-                      scale: widget.creator.scale,
-                      specials: widget.creator.specials,
-                      eco: widget.creator.eco,
                     ),
                     PageView(
                       controller: controller,

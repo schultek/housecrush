@@ -30,6 +30,7 @@ class ProfileNotifier extends Notifier<void> {
       double? expectedIncome) async {
     var doc = await ref.read(profileDocRepository.future);
     await doc!.update({
+      'name': ref.read(userNameRepository)!,
       if (currentIncome != null) 'currentIncome': currentIncome,
       if (currentSavings != null) 'currentSavings': currentSavings,
       if (expectedIncome != null) 'expectedIncome': expectedIncome,

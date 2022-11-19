@@ -59,7 +59,6 @@ class _ChooseSpecialsState extends State<ChooseSpecials> {
                   building: widget.creator.building,
                   scale: widget.creator.scale,
                   specials: specials,
-                  eco: widget.creator.eco,
                 ),
               ),
             ),

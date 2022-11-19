@@ -93,7 +93,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
         Slider(
-          value: currentIncomeLog,
+          value: max(3, currentIncomeLog),
           min: 3,
           max: 6,
           onChanged: (value) {
@@ -117,7 +117,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
         Slider(
-          value: currentSavingsLog,
+          value: max(3, currentSavingsLog),
           min: 3,
           max: 6,
           onChanged: (value) {
@@ -145,7 +145,7 @@ class _ProfileFormState extends State<ProfileForm> {
           ],
         ),
         Slider(
-          value: expectedIncomeLog,
+          value: max(3, expectedIncomeLog),
           min: 3,
           max: 7,
           onChanged: (value) {

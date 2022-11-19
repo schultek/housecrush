@@ -11,7 +11,10 @@ class ProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var profile = context.watch(profileRepository).value!;
+    var profile = context.watch(profileRepository).valueOrNull;
+    if (profile == null) {
+      return Container();
+    }
     return ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Material(

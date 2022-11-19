@@ -48,8 +48,13 @@ class House with Mappable {
       }
     }
 
-    if (eco != null && eco! > 1) {
-      s += 'eco-';
+    if (eco != null) {
+      if (eco! > 1) {
+        if (s == 'A ') {
+          s = 'An ';
+        }
+        s += 'eco-friendly ';
+      }
     }
 
     if (building != null) {

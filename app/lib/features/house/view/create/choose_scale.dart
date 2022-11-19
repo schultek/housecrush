@@ -58,8 +58,6 @@ class _ChooseScaleState extends State<ChooseScale> {
                   location: widget.creator.location,
                   building: widget.creator.building,
                   scale: scale,
-                  specials: widget.creator.specials,
-                  eco: widget.creator.eco,
                 ),
               ),
             ),
