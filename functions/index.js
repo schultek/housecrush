@@ -1,3 +1,5 @@
+
+//import fetch from 'node-fetch';
 function intMO (price, savings){
     var bc = 0.0375*price;
     var nc = price*0.02;
@@ -56,7 +58,8 @@ const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require('firebase-admin');
-const { user } = require('firebase-functions/v1/auth');
+const fetch = require('node-fetch');
+
 admin.initializeApp();
 
 // Listens for new messages added to /messages/:documentId/original and creates an
@@ -117,28 +120,40 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
             }
         }
 
-        if (specials.contains('alpaka')) {
+        if (specials.includes('alpaka')) {
             price += '2500';
-        } else if (specials.contains('pot')) {
+        } else if (specials.includes('pot')) {
             price += '5';
-        } else if (specials.contains('david')) {
+        } else if (specials.includes('david')) {
             price += '300000000';
-        } else if (specials.contains('palm')) {
+        } else if (specials.includes('palm')) {
             price += '5000';
-        } else if (specials.contains('pool')) {
+        } else if (specials.includes('pool')) {
             price += '20000';
         }
 
-
-
         const qsnap = await admin.firestore().collection('users').doc(userid).get();
+
+        let startIncome = qsnap.data().currentIncome;
+        let endIncome = qsnap.data().expectedIncome;
+        let savings = qsnap.data().currentSavings;
         let presavingPeriod = 0;
 
-        if (qsnap.data().savings < 0.11*price){
-            presavingPeriod = Math.ceil((0.11*price)/(12*qsnap.data().income));
+        while (savings < 0.11*price) {
+
+            presavingPeriod += 1;
+
+            let income = startIncome;
+            if (presavingPeriod < 20) {
+                income += (endIncome - startIncome) / 20 * presavingPeriod;
+            } else {
+                income = endIncome;
+            }
+
+            savings += 0.10 * income;
         }
 
-        var req = JSON.stringify(intMO(price, qsnap.data().savings + presavingPeriod*12*qsnap.data().income));
+        var req = JSON.stringify(intMO(price, savings));
         let error = false;
         var response = await fetch('https://www.interhyp.de/customer-generation/interest/marketOverview', {
             method: 'POST',
@@ -148,7 +163,6 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
         .then(response => response.json())
         .catch((e) => error = true)
         
-        let configurationId = context.params.documentId;
         let bank = "None";
         let loan = 0;
         let monthlyPayment = 0;
@@ -164,8 +178,8 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
         
         //calculate wait time
         //y=ln(c1*x + c2)
-        c2 = Math.exp(qsnap.data().income/1000)
-        c1 = (Math.exp(qsnap.data().targetincome/1000)-c2)/20
+        c2 = Math.exp(startIncome/10000)
+        c1 = (Math.exp(endIncome/10000)-c2)/20
         
         let cost = loan;
         if (cost == 0){
@@ -201,5 +215,5 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
         // You must return a Promise when performing asynchronous tasks inside a Functions such as
         // writing to Firestore.
         // Setting an 'uppercase' field in Firestore document returns a Promise.
-        return snap.ref.set({price, waitYears, loanYears, monthlyPayment, bank, load}, {merge: true});
+        return snap.ref.set({price, waitYears, loanYears, monthlyPayment, bank, loan}, {merge: true});
     });
