@@ -13,7 +13,17 @@ class House with Mappable {
   final List<String> likes;
 
   final String? location;
+  final String? building;
+  final double? scale;
 
   House({required this.id, required this.owner, this.likes = const [],
-  this.location});
+  this.location, this.building, this.scale});
+}
+
+class HouseCreator {
+
+  String? location;
+  String? building;
+  double? scale;
+
 }

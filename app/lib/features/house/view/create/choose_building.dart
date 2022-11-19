@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:housecrush_app/features/house/domain/house.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../../../constants/colors.dart';
@@ -7,8 +8,9 @@ import '../../../common/view/action_button.dart';
 import '../../domain/locations.dart';
 
 class ChooseBuilding extends StatefulWidget {
-  ChooseBuilding({required this.onBuilding, Key? key}) : super(key: key);
+  ChooseBuilding({required this.creator, required this.onBuilding, Key? key}) : super(key: key);
 
+  final HouseCreator creator;
   final void Function(String) onBuilding;
 
   @override
@@ -40,7 +42,11 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
-                  children: [PageView(
+                  children: [
+                    Positioned.fill(child: Image.network('https://housecrush.schultek.de/images/locations/${locations[widget.creator.location]![1]}',
+                      fit: BoxFit.cover,
+                    ),),
+                    PageView(
                     onPageChanged: (value) {
                       setState(() {
                         building = buildings.keys.toList()[value];
@@ -83,7 +89,7 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
           ),
           const SizedBox(height: 40),
           ActionButton(
-            label: 'Create',
+            label: 'Next',
             onPressed: () async {
               widget.onBuilding(building);
             },

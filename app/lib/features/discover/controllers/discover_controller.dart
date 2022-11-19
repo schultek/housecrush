@@ -26,7 +26,7 @@ class DiscoverController extends AsyncNotifier<List<House>> {
     var firestore = await ref.watch(firestoreRepository.future);
     var query = await firestore
         .collection('houses')
-        .where('owner', isNotEqualTo: userId)
+        //.where('owner', isNotEqualTo: userId)
         .get();
 
     return query.docs.map((doc) {

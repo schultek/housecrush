@@ -5,6 +5,8 @@ import 'package:housecrush_app/features/house/view/create/choose_location.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../controllers/house_controller.dart';
+import '../domain/house.dart';
+import 'create/choose_scale.dart';
 
 class NewHouseScreen extends StatefulWidget {
   const NewHouseScreen({Key? key}) : super(key: key);
@@ -14,42 +16,64 @@ class NewHouseScreen extends StatefulWidget {
 }
 
 class _NewHouseScreenState extends State<NewHouseScreen> {
-
   int step = 0;
 
-  String? location;
-  String? building;
+  HouseCreator creator = HouseCreator();
 
   Future<void> finish() async {
-    await context.read(houseController).createNewHouse(location: location!, building: building!);
+    await context
+        .read(houseController)
+        .createNewHouse(creator);
     context.beamToReplacementNamed('/design');
   }
 
   @override
   Widget build(BuildContext context) {
-
     Widget child;
     if (step == 0) {
-      child = ChooseLocation(onLocation: (value) {
-        location = value;
+      child = ChooseLocation(
+        creator: creator,
+          onLocation: (value) {
+        creator.location = value;
         setState(() {
           step++;
         });
       });
     } else if (step == 1) {
-child = ChooseBuilding(onBuilding: (value) {
-  building = value;
-  finish();
-});
+      child = ChooseBuilding(
+          creator: creator,
+          onBuilding: (value) {
+            creator.building = value;
+            setState(() {
+              step++;
+            });
+          },);
+    } else if (step == 2) {
+      child = ChooseScale(
+        creator: creator,
+        onScale: (value) {
+          creator.scale = value;
+          finish();
+        },);
     } else {
       child = Container();
     }
 
-      return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        if (step > 0) {
+          setState(() {
+            step--;
+          });
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
         body: SafeArea(
           child: child,
         ),
-      );
-
+      ),
+    );
   }
 }

@@ -11,6 +11,6 @@ final locations = {
 final buildings = {
   'home': ['Family Home', 'EFHaus8001067.png'],
   'cabin': ['Wooden Cabin', 'Holzhaus8001067.png'],
-  'carton': ['Box', 'Karton8001067.png'],
+  'carton': ['A Box', 'Karton8001067.png'],
   'castle': ['Castle', 'Schloss8001067.png']
 };
