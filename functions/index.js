@@ -59,112 +59,77 @@ const admin = require('firebase-admin');
 const { user } = require('firebase-functions/v1/auth');
 admin.initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into 
-// Firestore under the path /messages/:documentId/original
-exports.addUser = functions.https.onRequest(async (req, res) => {
-    // Grab the text parameter.
-    const name = req.query.name;
-    const income = req.query.income;
-    const savings = req.query.savings;
-    const targetincome = req.query.targetincome;
-    const character = req.query.character;
-    //const income = req.query.income
-    // Push the new message into Firestore using the Firebase Admin SDK.
-    const writeResult = await admin.firestore().collection('users').add({
-        name: name,
-        income: income,
-        savings: savings,
-        targetincome: targetincome,
-        character: character});
-  // Send back a message that we've successfully written the message
-  res.json({result: `User with ID: ${writeResult.id} added.`});
-});
-
 // Listens for new messages added to /messages/:documentId/original and creates an
 // uppercase version of the message to /messages/:documentId/uppercase
-exports.addUserStr = functions.firestore.document('/users/{documentId}')
-    .onCreate((snap, context) => {
-        // Grab the current value of what was written to Firestore.
-        const name = snap.data().name;
-        const income = snap.data().income;
-        const savings = snap.data().savings;
-        const targetincome = snap.data().targetincome;
-        const character = snap.data().character;
-
-        // Access the parameter `{documentId}` with `context.params`
-        functions.logger.log('Got', context.params.documentId, name, income, );
-        
-        const mergeStr = name + income + savings + targetincome + character;
-        
-        // You must return a Promise when performing asynchronous tasks inside a Functions such as
-        // writing to Firestore.
-        // Setting an 'uppercase' field in Firestore document returns a Promise.
-        return snap.ref.set({mergeStr}, {merge: true});
-    });
-
-// Take the text parameter passed to this HTTP endpoint and insert it into 
-// Firestore under the path /messages/:documentId/original
-exports.addConfiguration = functions.https.onRequest(async (req, res) => {
-    // Grab the text parameter.
-    const userid = req.query.userid;
-    const type = req.query.type;
-    const size = req.query.size;
-    const area = req.query.area;
-    //const addons = req.query.addons;
-    // Push the new message into Firestore using the Firebase Admin SDK.
-    const writeResult = await admin.firestore().collection('configurations').add({
-        userid: userid,
-        type: type,
-        size: size,
-        area: area});
-    // Send back a message that we've successfully written the message
-    res.json({result: `Configuration with ID: ${writeResult.id} added.`});
-});
-
-// Listens for new messages added to /messages/:documentId/original and creates an
-// uppercase version of the message to /messages/:documentId/uppercase
-exports.addConfigurationStr = functions.firestore.document('/configurations/{documentId}')
+exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}')
     .onCreate(async(snap, context) => {
         // Grab the current value of what was written to Firestore.
-        const userid = snap.data().userid;
-        const type = snap.data().type;
-        const size = snap.data().size;
-        const area = snap.data().area;
+        const userid = snap.data().owner;
+
+        const type = snap.data().building;
+        const size = snap.data().scale;
+        const area = snap.data().location;
+        const specials = snap.data().specials;
+        const eco = snap.data().eco;
 
         // Access the parameter `{documentId}` with `context.params`
         functions.logger.log('Got', context.params.documentId, userid, type, size, area);
         
-        const mergeStr = userid + type + size + area;
-
         var typeprice = 1000;   //in €
         var sizeqm = 100;       //in qm
         var areafactor = 1.0;   //in %/100
 
-        if (type == "villa") {
-            typeprice = 5000;
-        } else if (type == "family"){
-            typeprice = 3000;
-        } else if (type == "crip"){
+        if (type == "castle") {
+            typeprice = 8000;
+        } else if (type == "home"){
+            typeprice = 4000;
+        } else if (type == "cabin"){
             typeprice = 2000;
+        } else if (type == "carton"){
+            typeprice = 500;
         }
 
-        if (size == "big"){
-            sizeqm = 500;
-        } else if (size == "medium"){
-            sizeqm = 250;
-        } else if (size == "smol"){
-            sizeqm = 100;
-        }
+        sizeqm = size * 250;
 
         if (area == "mountain"){
-            areafactor = 1.1;
-        } else if (area == "antarctica"){
+            areafactor = 1.2;
+        } else if (area == "arctic"){
+            areafactor = 0.9;
+        } else if (area == "island"){
+            areafactor = 1.7;
+        }else if (area == "bridge"){
+            areafactor = 0.8;
+        }else if (area == "jungle"){
             areafactor = 0.7;
-        } else if (area == "beach"){
+        }else if (area == "slum"){
+            areafactor = 0.4;
+        }else if (area == "city"){
             areafactor = 1.3;
         }
 
         price = sizeqm*typeprice*areafactor;
+
+        if (eco != null) {
+            if (eco < 2) {
+                price *= (1 - (eco * 0.1));
+            } else {
+                price += 200000;
+            }
+        }
+
+        if (specials.contains('alpaka')) {
+            price += '2500';
+        } else if (specials.contains('pot')) {
+            price += '5';
+        } else if (specials.contains('david')) {
+            price += '300000000';
+        } else if (specials.contains('palm')) {
+            price += '5000';
+        } else if (specials.contains('pool')) {
+            price += '20000';
+        }
+
+
 
         const qsnap = await admin.firestore().collection('users').doc(userid).get();
 
@@ -186,18 +151,11 @@ exports.addConfigurationStr = functions.firestore.document('/configurations/{doc
 
         if(error==false){
             let [ parsedLoan, _ ] = JSON.parse(JSON.stringify(response));
-            let bank = parsedLoan.bankDetails.bankName;
-            let loan = parsedLoan.loanAmount;
-            let monthlyPayment = parsedLoan.monthlyPayment;
-            let loanYears = parsedLoan.totalDuration.years;
+             bank = parsedLoan.bankDetails.bankName;
+             loan = parsedLoan.loanAmount;
+             monthlyPayment = parsedLoan.monthlyPayment;
+             loanYears = parsedLoan.totalDuration.years;
         }
-        
-        const writeResult = await admin.firestore().collection('loans').add({
-            ConfigurationId: configurationId,
-            bank: bank,
-            loan: loan,
-            monthlyPayment: monthlyPayment,
-            loanYears: loanYears});
         
         //calculate wait time
         //y=ln(c1*x + c2)
@@ -236,5 +194,5 @@ exports.addConfigurationStr = functions.firestore.document('/configurations/{doc
         // You must return a Promise when performing asynchronous tasks inside a Functions such as
         // writing to Firestore.
         // Setting an 'uppercase' field in Firestore document returns a Promise.
-        return snap.ref.set({price, waitYears, loanYears}, {merge: true});
+        return snap.ref.set({price, waitYears, loanYears, monthlyPayment, bank, load}, {merge: true});
     });
