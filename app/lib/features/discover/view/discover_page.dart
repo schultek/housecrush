@@ -24,7 +24,7 @@ class DiscoverPage extends StatelessWidget {
             SliverToBoxAdapter(
               child: SafeArea(
                 child: Text(
-                  'See what others dream of.',
+                  'Discover what others dream of.',
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
