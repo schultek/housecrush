@@ -20,6 +20,8 @@ class HouseController {
       'location': creator.location,
       'building': creator.building,
       'scale': creator.scale,
+      'specials': creator.specials,
+      'eco': creator.eco,
     };
     var doc = await firestore.collection('houses').add(data);
     

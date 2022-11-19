@@ -7,6 +7,7 @@ import 'package:riverpod_context/riverpod_context.dart';
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
 import '../../domain/locations.dart';
+import '../render_house.dart';
 
 class ChooseBuilding extends StatefulWidget {
   ChooseBuilding({required this.creator, required this.onBuilding, Key? key}) : super(key: key);
@@ -46,9 +47,13 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
                   children: [
-                    Positioned.fill(child: Image.network('https://housecrush.schultek.de/images/locations/${locations[widget.creator.location]![1]}',
-                      fit: BoxFit.cover,
-                    ),),
+                    RenderHouse(
+                      location: widget.creator.location,
+                      building: widget.creator.building,
+                      scale: widget.creator.scale,
+                      specials: widget.creator.specials,
+                      eco: widget.creator.eco,
+                    ),
                     PageView(
                     onPageChanged: (value) {
                       setState(() {

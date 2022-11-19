@@ -22,3 +22,9 @@ final allSpecials = {
   'palm': ['Palm Tree', 'Palme.png'],
   'pool': ['A Pool', 'Pool.png'],
 };
+
+final ecos = [
+  ['Tree', 'Baum.png'],
+  ['Solar', 'Photovoltaik.png'],
+  ['Wind', 'Windrad.png'],
+];

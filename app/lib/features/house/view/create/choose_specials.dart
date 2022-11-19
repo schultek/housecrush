@@ -8,6 +8,7 @@ import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
 import '../../../common/view/back_button.dart';
 import '../../domain/locations.dart';
+import '../render_house.dart';
 
 class ChooseSpecials extends StatefulWidget {
   ChooseSpecials({required this.creator, required this.onSpecials, Key? key})
@@ -46,36 +47,13 @@ class _ChooseSpecialsState extends State<ChooseSpecials> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: LayoutBuilder(builder: (context, constraints) {
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Image.network(
-                          'https://housecrush.schultek.de/images/locations/${locations[widget.creator.location]![1]}',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Transform.scale(
-                          scale: widget.creator.scale,
-                          alignment: Alignment.bottomCenter,
-                          origin: Offset(0, -constraints.maxHeight / 3),
-                          child: Image.network(
-                            'https://housecrush.schultek.de/images/buildings/${buildings[widget.creator.building]![1]}',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      for (var s in specials)
-                        Positioned.fill(
-                          child: Image.network(
-                            'https://housecrush.schultek.de/images/specials/${allSpecials[s]![1]}',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                    ],
-                  );
-                }),
+                child: RenderHouse(
+                  location: widget.creator.location,
+                  building: widget.creator.building,
+                  scale: widget.creator.scale,
+                  specials: specials,
+                  eco: widget.creator.eco,
+                ),
               ),
             ),
           ),

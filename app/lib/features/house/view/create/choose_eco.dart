@@ -1,27 +1,24 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:housecrush_app/features/house/domain/house.dart';
-import 'package:riverpod_context/riverpod_context.dart';
 
-import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
 import '../../../common/view/back_button.dart';
 import '../../domain/locations.dart';
 import '../render_house.dart';
 
-class ChooseScale extends StatefulWidget {
-  ChooseScale({required this.creator, required this.onScale, Key? key})
+class ChooseEco extends StatefulWidget {
+  ChooseEco({required this.creator, required this.onEco, Key? key})
       : super(key: key);
 
   final HouseCreator creator;
-  final void Function(double) onScale;
+  final void Function(int) onEco;
 
   @override
-  State<ChooseScale> createState() => _ChooseScaleState();
+  State<ChooseEco> createState() => _ChooseEcoState();
 }
 
-class _ChooseScaleState extends State<ChooseScale> {
-  double scale = 1;
+class _ChooseEcoState extends State<ChooseEco> {
+  int eco = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class _ChooseScaleState extends State<ChooseScale> {
         children: [
           const GoBackButton(),
           Text(
-            'Set the scale.',
+            'Set Eco Factor.',
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 40),
@@ -49,29 +46,30 @@ class _ChooseScaleState extends State<ChooseScale> {
                 child: RenderHouse(
                   location: widget.creator.location,
                   building: widget.creator.building,
-                  scale: scale,
+                  scale: widget.creator.scale,
                   specials: widget.creator.specials,
-                  eco: widget.creator.eco,
+                  eco: eco,
                 ),
               ),
             ),
           ),
           const SizedBox(height: 10),
           Slider(
-            value: scale,
-            min: 0.2,
+            value: eco.toDouble(),
+            min: 0,
             max: 3,
+            divisions: 3,
             onChanged: (value) {
               setState(() {
-                scale = value;
+                eco = value.round();
               });
             },
           ),
           const SizedBox(height: 40),
           ActionButton(
-            label: 'Next',
+            label: 'Create',
             onPressed: () async {
-              widget.onScale(scale);
+              widget.onEco(eco);
             },
           ),
         ],
