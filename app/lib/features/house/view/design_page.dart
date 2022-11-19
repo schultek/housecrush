@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
+import 'package:housecrush_app/features/common/view/action_button.dart';
 import 'package:housecrush_app/features/house/data/houses_repository.dart';
 import 'package:housecrush_app/features/profile/data/profile_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
@@ -13,51 +14,62 @@ class DesignPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: context.watch(hasProfileRepository).valueOrNull ?? false
-                  ? const ProfileButton()
-                  : const SizedBox(height: 32),
-            ),
-          ),
-          const SliverPadding(padding: EdgeInsets.only(top: 10)),
-          SliverToBoxAdapter(
+
+    var houses = context.watch(housesRepository).valueOrNull ?? [];
+
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: () {
+          context.beamToNamed('/design/new');
+        },
+        backgroundColor: hcRed,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        child: const Icon(Icons.add),),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: context.watch(hasProfileRepository).valueOrNull ?? false
+                      ? const ProfileButton()
+                      : const SizedBox(height: 32),
+                ),
+                const SizedBox(height: 10),
                 Text(
                   'Design your Dream House.',
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
-                OutlinedButton(
-                  onPressed: () {
-                    context.beamToNamed('/design/new');
-                  },
-                  child: Text('Design'),
-                ),
+                const SizedBox(height: 20),
+                if (houses.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 80),
+                    child: Center(
+                      child: Opacity(
+                        opacity: 0.4,
+                        child: Text('Add a house by cicking \'+\'',
+                        style: Theme.of(context).textTheme.bodySmall),
+                      ),
+                    )
+                  ),
+                ...houses.map((house) {
+                  return Container(
+                    height: 100,
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      color: hcDark[200],
+                    ),
+                    child: const Center(child: Text('House')),
+                  );
+                }),
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              (context.watch(housesRepository).valueOrNull ?? []).map((house) {
-                return Container(
-                  height: 100,
-                  margin: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    color: hcDark[500],
-                  ),
-                  child: const Text('House'),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

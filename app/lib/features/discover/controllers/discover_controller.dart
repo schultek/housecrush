@@ -41,14 +41,20 @@ class DiscoverController extends AsyncNotifier<List<House>> {
     if (houses == null) return;
 
     var userId = ref.read(userIdRepository)!;
+    var index = houses.indexOf(house);
 
+    House newHouse;
     if (like) {
-      house.likes.add(userId);
+      newHouse = house.copyWith(likes: [...house.likes, userId]);
     } else {
-      house.likes.remove(userId);
+      newHouse = house.copyWith(likes: [...house.likes]..remove(userId));
     }
 
-    state = state;
+    state = state.whenData((value) {
+      var newVal = [...value];
+      newVal[index] = newHouse;
+      return newVal;
+    });
 
     await firestore.collection('houses').doc(house.id).update({
       'likes': like ? FieldValue.arrayUnion([userId]) : FieldValue.arrayRemove([userId]),

@@ -21,9 +21,11 @@ class DiscoverPage extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Text(
-                'See what others dream of.',
-                style: Theme.of(context).textTheme.displayLarge,
+              child: SafeArea(
+                child: Text(
+                  'See what others dream of.',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
               ),
             ),
             const SliverPadding(padding: EdgeInsets.only(top: 20)),
@@ -41,7 +43,7 @@ class DiscoverPage extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    color: hcDark[500],
+                    color: hcDark[200],
                   ),
                   child: Align(
                     alignment: Alignment.bottomLeft,
@@ -49,7 +51,8 @@ class DiscoverPage extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: Icon(
-                              isLiked ? Icons.favorite : Icons.favorite_border),
+                              isLiked ? Icons.favorite : Icons.favorite_border,
+                          color: hcRed),
                           onPressed: () {
                             context
                                 .read(discoverController.notifier)

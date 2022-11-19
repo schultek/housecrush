@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:housecrush_app/features/auth/data/user_name_repository.dart';
+import 'package:housecrush_app/features/common/view/action_button.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../controllers/sign_in_controller.dart';
@@ -30,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(40),
-              child: Image.network('images/HouseCrushSchriftzug.png'),
+              child: Image.network('https://housecrush.schultek.de/images/HouseCrushSchriftzug.png'),
             ),
             const SizedBox(height: 100),
             if (context.watch(userNameRepository)?.isEmpty ?? true)
@@ -40,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   hintText: 'What\'s your name?',
-                  hintStyle: TextStyle(color: Colors.black),
+                  hintStyle: const TextStyle(color: Colors.black),
                 ),
                 onChanged: (text) {
                   setState(() {
@@ -49,18 +50,14 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
               ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              style:ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(16),
-                shape: const StadiumBorder(),
-                maximumSize: Size.infinite,
-              ),
+            ActionButton(label: 'Get Started',
+
               onPressed: name.isNotEmpty
                   ? () {
                       context.read(signInController.notifier).signIn(name);
                     }
                   : null,
-              child: const Center(child: Text('Get Started')),
+
             ),
           ],
         ),

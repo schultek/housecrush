@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:housecrush_app/features/common/view/action_button.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../../constants/colors.dart';
@@ -11,20 +12,27 @@ class NewHouseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: hcDark[800],
-      body: Column(
-        children: [
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Text(
+                'Choose a location.',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
 
 
-          OutlinedButton(
-            onPressed: () async {
-              await context.read(newHouseController).createNewHouse();
-              context.beamToReplacementNamed('/design');
-            },
-            child: Text('Create'),
+              ActionButton(label: 'Create',
+                onPressed: () async {
+                  await context.read(newHouseController).createNewHouse();
+                  context.beamToReplacementNamed('/design');
+                },
+              ),
+
+            ],
           ),
-
-        ],
+        ),
       ),
     );
   }

@@ -17,7 +17,7 @@ class ProfileNotifier extends Notifier<void> {
     var doc = await ref.read(profileDocRepository.future);
     await doc!.set({
       'name': ref.read(userNameRepository)!,
-      'profileUrl': 'images/spidy.jpeg',
+      'profileUrl': 'https://housecrush.schultek.de/images/spidy.jpeg',
       'budget': {
         'currentIncome': currentIncome,
       },

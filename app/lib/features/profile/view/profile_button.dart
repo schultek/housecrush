@@ -18,7 +18,7 @@ class ProfileButton extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Material(
-          color: hcDark[500],
+          color: hcDark[300],
           child: InkWell(
             onTap: () {
               context.beamToNamed('/profile');

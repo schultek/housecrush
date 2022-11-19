@@ -40,15 +40,14 @@ class MainLayout extends StatelessWidget {
     var currentPageIndex = context.watch(pageIndexProvider);
 
     return Scaffold(
-      backgroundColor: hcDark[800],
       body: StackSwitcher(
         currentIndex: currentPageIndex,
         children: pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: hcLight[0],
-        unselectedItemColor: hcLight[400],
-        backgroundColor: hcDark[800],
+        selectedItemColor: hcRed,
+        //unselectedItemColor: hcLight[400],
+        backgroundColor: Colors.white,
         currentIndex: currentPageIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,

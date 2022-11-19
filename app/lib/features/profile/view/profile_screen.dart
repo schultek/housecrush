@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:housecrush_app/constants/colors.dart';
+import 'package:housecrush_app/features/common/view/action_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -8,19 +9,26 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: hcDark[800],
-        body: Column(
+        body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
-              child: Text('Profile'),
+            Text(
+              'Profile',
+              style: Theme.of(context).textTheme.displayLarge,
             ),
-            OutlinedButton(
+            const SizedBox(height: 100),
+            ActionButton(
+              label: 'Logout',
               onPressed: () {
                 FirebaseAuth.instance.signOut();
               },
-              child: const Text('Logout'),
             )
           ],
-        ));
+        ),
+      ),
+    ));
   }
 }

@@ -43,19 +43,7 @@ const ColorSwatch hcBlue = ColorSwatch(4280842997, {
 
 const Color hcLightBlue = Color.fromRGBO(222, 237, 255, 1);
 
-const ColorSwatch hcRed = ColorSwatch(4294397511, {
-  900: Color.fromRGBO(89, 9, 9, 1),
-  800: Color.fromRGBO(115, 9, 9, 1),
-  700: Color.fromRGBO(147, 27, 10, 1),
-  600: Color.fromRGBO(209, 32, 20, 1),
-  500: Color.fromRGBO(247, 78, 71, 1),
-  400: Color.fromRGBO(248, 125, 117, 1),
-  300: Color.fromRGBO(255, 191, 187, 1),
-  200: Color.fromRGBO(255, 224, 214, 1),
-  100: Color.fromRGBO(255, 237, 231, 1)
-});
-
-final Color hcOrange = Color(int.parse('ffff9400', radix: 16));
+final Color hcRed = Color(int.parse('ffa1232b', radix: 16));
 
 final Color hcGreen = Color(int.parse('ff41C58D', radix: 16));
 final Color hcYellow = Color(int.parse('ffFFD43D', radix: 16));

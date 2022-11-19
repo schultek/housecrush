@@ -6,22 +6,24 @@ class FriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: CustomScrollView(
+    return CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Text(
-              'Your Friends.',
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
+            child: SafeArea(
+              child: Padding(
+        padding: const EdgeInsets.all(20),
+    child: Text(
+                'Your Friends.',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),),
           ),
           SliverList(
             delegate: SliverChildListDelegate(
               List.generate(20, (index) {
                 return Container(
-                  height: 100,
-                  margin: const EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                height: 100,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: hcDark[500],
@@ -31,7 +33,7 @@ class FriendsPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
+
     );
   }
 }
