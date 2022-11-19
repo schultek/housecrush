@@ -132,8 +132,13 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
 
 
         const qsnap = await admin.firestore().collection('users').doc(userid).get();
+        let presavingPeriod = 0;
 
-        var req = JSON.stringify(intMO(price, qsnap.data().savings));
+        if (qsnap.data().savings < 0.11*price){
+            presavingPeriod = Math.ceil((0.11*price)/(12*qsnap.data().income));
+        }
+
+        var req = JSON.stringify(intMO(price, qsnap.data().savings + presavingPeriod*12*qsnap.data().income));
         let error = false;
         var response = await fetch('https://www.interhyp.de/customer-generation/interest/marketOverview', {
             method: 'POST',
@@ -188,6 +193,8 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
             }
             waitYears = waitYears + 1;
         }
+
+        waitYears += presavingPeriod;
 
         functions.logger.log("waityears and loanyears " + waitYears + " " + loanYears);
 

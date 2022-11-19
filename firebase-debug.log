@@ -3731,3 +3731,76 @@ shutdown requested via /__/quitquitquit
 [warn] ⚠  Your function was killed because it raised an unhandled error. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-addConfigurationStr"},"extension":{},"message":"Your function was killed because it raised an unhandled error."}}
 [debug] [2022-11-19T16:47:00.441Z] [worker-us-central1-addConfigurationStr-5dc3954f-4cf0-4c38-826e-34f588b5fae0]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-addConfigurationStr-5dc3954f-4cf0-4c38-826e-34f588b5fae0]: exited"}}
 [debug] [2022-11-19T16:47:00.442Z] [worker-us-central1-addConfigurationStr-5dc3954f-4cf0-4c38-826e-34f588b5fae0]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-addConfigurationStr-5dc3954f-4cf0-4c38-826e-34f588b5fae0]: FINISHED"}}
+[debug] [2022-11-19T18:10:54.537Z] File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers"}}
+[debug] [2022-11-19T18:10:54.747Z] File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers"}}
+[debug] [2022-11-19T18:10:55.880Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2022-11-19T18:11:12.794Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-11-19T18:11:12.794Z] Building nodejs source
+[debug] [2022-11-19T18:11:12.795Z] Analyzing nodejs backend spec
+[debug] [2022-11-19T18:11:12.866Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-11-19T18:11:14.985Z] Serving at port 9005
+
+[debug] [2022-11-19T18:11:15.568Z] Got response from /__/functions.yaml {"endpoints":{"addConfigurationStr":{"platform":"gcfv1","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.create","eventFilters":{"resource":"projects/housecrush-1428e/databases/(default)/documents/houses/{documentId}"},"retry":false},"labels":{},"entryPoint":"addConfigurationStr"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-11-19T18:11:15.827Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: addConfigurationStr. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: addConfigurationStr."}}
+[debug] [2022-11-19T18:11:16.062Z] Definition for trigger addConfigurationStr changed from {"eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/housecrush-1428e/databases/(default)/documents/configurations/{documentId}"} to {"eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/housecrush-1428e/databases/(default)/documents/houses/{documentId}"} {"metadata":{"emulator":{"name":"functions"},"message":"Definition for trigger addConfigurationStr changed from {\"eventType\":\"providers/cloud.firestore/eventTypes/document.create\",\"resource\":\"projects/housecrush-1428e/databases/(default)/documents/configurations/{documentId}\"} to {\"eventType\":\"providers/cloud.firestore/eventTypes/document.create\",\"resource\":\"projects/housecrush-1428e/databases/(default)/documents/houses/{documentId}\"}"}}
+[debug] [2022-11-19T18:11:16.063Z] addFirestoreTrigger "{\"eventTrigger\":{\"eventType\":\"providers/cloud.firestore/eventTypes/document.create\",\"resource\":\"projects/housecrush-1428e/databases/(default)/documents/houses/{documentId}\",\"service\":\"firestore.googleapis.com\"}}"
+[debug] [2022-11-19T18:11:16.065Z] >>> [apiv2][query] PUT http://127.0.0.1:8080/emulator/v1/projects/housecrush-1428e/triggers/us-central1-addConfigurationStr-0 [none]
+[debug] [2022-11-19T18:11:16.065Z] >>> [apiv2][body] PUT http://127.0.0.1:8080/emulator/v1/projects/housecrush-1428e/triggers/us-central1-addConfigurationStr-0 "{\"eventTrigger\":{\"eventType\":\"providers/cloud.firestore/eventTypes/document.create\",\"resource\":\"projects/housecrush-1428e/databases/(default)/documents/houses/{documentId}\",\"service\":\"firestore.googleapis.com\"}}"
+[debug] [2022-11-19T18:11:16.604Z] <<< [apiv2][status] PUT http://127.0.0.1:8080/emulator/v1/projects/housecrush-1428e/triggers/us-central1-addConfigurationStr-0 200
+[debug] [2022-11-19T18:11:16.604Z] <<< [apiv2][body] PUT http://127.0.0.1:8080/emulator/v1/projects/housecrush-1428e/triggers/us-central1-addConfigurationStr-0 {}
+[info] ✔  functions[us-central1-addConfigurationStr]: firestore function initialized. {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mfirestore\u001b[22m function initialized."}}
+[debug] [2022-11-19T18:17:30.823Z] File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /mnt/c/Users/tbent/Desktop/hackatum/housecrush/functions/index.js changed, reloading triggers"}}
+[debug] [2022-11-19T18:17:31.896Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2022-11-19T18:17:45.217Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[debug] [2022-11-19T18:17:45.217Z] Building nodejs source
+[debug] [2022-11-19T18:17:45.217Z] Analyzing nodejs backend spec
