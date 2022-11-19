@@ -49,7 +49,6 @@ final houseWithLoanController = StreamProvider.family((ref, String id) async* {
   yield* firestore.collection('houses').doc(id).snapshots().map((doc) {
     return doc.exists ? Mapper.fromMap<House>({...doc.data()!, 'id': doc.id}) : null;
   }).where((house) => house != null && house.loan != null).map((d) {
-    print("HOUSE $d");
     return d;
   });
 });

@@ -64,7 +64,7 @@ admin.initializeApp();
 
 // Listens for new messages added to /messages/:documentId/original and creates an
 // uppercase version of the message to /messages/:documentId/uppercase
-exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}')
+exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1GB'}).firestore.document('/houses/{documentId}')
     .onCreate(async(snap, context) => {
         // Grab the current value of what was written to Firestore.
         const userid = snap.data().owner;
