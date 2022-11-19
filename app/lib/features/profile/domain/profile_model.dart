@@ -7,5 +7,9 @@ class UserProfile with Mappable {
   final String name;
   final String? profileUrl;
 
-  UserProfile(this.name, this.profileUrl);
+  final double? currentIncome;
+  final double? currentSavings;
+  final double? expectedIncome;
+
+  UserProfile(this.name, this.profileUrl, this.currentIncome, this.currentSavings, this.expectedIncome);
 }

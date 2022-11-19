@@ -23,15 +23,15 @@ class UserProfileMapper extends BaseMapper<UserProfile> {
 
   @override Function get decoder => decode;
   UserProfile decode(dynamic v) => checked(v, (Map<String, dynamic> map) => fromMap(map));
-  UserProfile fromMap(Map<String, dynamic> map) => UserProfile(Mapper.i.$get(map, 'name'), Mapper.i.$getOpt(map, 'profileUrl'));
+  UserProfile fromMap(Map<String, dynamic> map) => UserProfile(Mapper.i.$get(map, 'name'), Mapper.i.$getOpt(map, 'profileUrl'), Mapper.i.$getOpt(map, 'currentIncome'), Mapper.i.$getOpt(map, 'currentSavings'), Mapper.i.$getOpt(map, 'expectedIncome'));
 
   @override Function get encoder => (UserProfile v) => encode(v);
   dynamic encode(UserProfile v) => toMap(v);
-  Map<String, dynamic> toMap(UserProfile u) => {'name': Mapper.i.$enc(u.name, 'name'), 'profileUrl': Mapper.i.$enc(u.profileUrl, 'profileUrl')};
+  Map<String, dynamic> toMap(UserProfile u) => {'name': Mapper.i.$enc(u.name, 'name'), 'profileUrl': Mapper.i.$enc(u.profileUrl, 'profileUrl'), 'currentIncome': Mapper.i.$enc(u.currentIncome, 'currentIncome'), 'currentSavings': Mapper.i.$enc(u.currentSavings, 'currentSavings'), 'expectedIncome': Mapper.i.$enc(u.expectedIncome, 'expectedIncome')};
 
-  @override String stringify(UserProfile self) => 'UserProfile(name: ${Mapper.asString(self.name)}, profileUrl: ${Mapper.asString(self.profileUrl)})';
-  @override int hash(UserProfile self) => Mapper.hash(self.name) ^ Mapper.hash(self.profileUrl);
-  @override bool equals(UserProfile self, UserProfile other) => Mapper.isEqual(self.name, other.name) && Mapper.isEqual(self.profileUrl, other.profileUrl);
+  @override String stringify(UserProfile self) => 'UserProfile(name: ${Mapper.asString(self.name)}, profileUrl: ${Mapper.asString(self.profileUrl)}, currentIncome: ${Mapper.asString(self.currentIncome)}, currentSavings: ${Mapper.asString(self.currentSavings)}, expectedIncome: ${Mapper.asString(self.expectedIncome)})';
+  @override int hash(UserProfile self) => Mapper.hash(self.name) ^ Mapper.hash(self.profileUrl) ^ Mapper.hash(self.currentIncome) ^ Mapper.hash(self.currentSavings) ^ Mapper.hash(self.expectedIncome);
+  @override bool equals(UserProfile self, UserProfile other) => Mapper.isEqual(self.name, other.name) && Mapper.isEqual(self.profileUrl, other.profileUrl) && Mapper.isEqual(self.currentIncome, other.currentIncome) && Mapper.isEqual(self.currentSavings, other.currentSavings) && Mapper.isEqual(self.expectedIncome, other.expectedIncome);
 
   @override Function get typeFactory => (f) => f<UserProfile>();
 }
@@ -44,14 +44,14 @@ extension UserProfileMapperExtension  on UserProfile {
 
 abstract class UserProfileCopyWith<$R> {
   factory UserProfileCopyWith(UserProfile value, Then<UserProfile, $R> then) = _UserProfileCopyWithImpl<$R>;
-  $R call({String? name, String? profileUrl});
+  $R call({String? name, String? profileUrl, double? currentIncome, double? currentSavings, double? expectedIncome});
   $R apply(UserProfile Function(UserProfile) transform);
 }
 
 class _UserProfileCopyWithImpl<$R> extends BaseCopyWith<UserProfile, $R> implements UserProfileCopyWith<$R> {
   _UserProfileCopyWithImpl(UserProfile value, Then<UserProfile, $R> then) : super(value, then);
 
-  @override $R call({String? name, Object? profileUrl = $none}) => $then(UserProfile(name ?? $value.name, or(profileUrl, $value.profileUrl)));
+  @override $R call({String? name, Object? profileUrl = $none, Object? currentIncome = $none, Object? currentSavings = $none, Object? expectedIncome = $none}) => $then(UserProfile(name ?? $value.name, or(profileUrl, $value.profileUrl), or(currentIncome, $value.currentIncome), or(currentSavings, $value.currentSavings), or(expectedIncome, $value.expectedIncome)));
 }
 
 class HouseMapper extends BaseMapper<House> {
