@@ -2,11 +2,13 @@ import 'package:another_stepper/another_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
+import 'package:housecrush_app/features/auth/data/auth_repository.dart';
 import 'package:housecrush_app/features/common/view/loading_screen.dart';
 import 'package:housecrush_app/features/house/controllers/house_controller.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../common/view/back_button.dart';
+import '../../profile/data/profile_repository.dart';
 import '../domain/house.dart';
 import 'house_card.dart';
 
@@ -41,6 +43,8 @@ class HouseScreen extends StatelessWidget {
           child: Builder(builder: (context) {
             var houseWithLoan =
                 context.watch(houseWithLoanController(id)).valueOrNull;
+            var ownerName = house.owner != context.read(userIdRepository) ?
+            context.watch(userNameByIdProvider(house.owner)).valueOrNull : null;
             return Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -59,6 +63,10 @@ class HouseScreen extends StatelessWidget {
                     '${house.description}.',
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
+                  if (ownerName != null)
+                    Text('by ${ownerName}', style: TextStyle(fontWeight: FontWeight.bold),),
+
+
                   const SizedBox(height: 20),
                   if (houseWithLoan != null) ...[
                     const SizedBox(height: 10),
@@ -125,7 +133,8 @@ class HouseScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: [
-                            const Text('Based on your income profile, you may '
+                            Text('Based on ${ownerName != null ? '${ownerName}s' : 'your'} income profile, '
+                                '${ownerName ?? 'you'} may '
                                 'be able to afford this loan in about'),
                             Row(
                               children: [
@@ -142,6 +151,7 @@ class HouseScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             scoreGraph(houseWithLoan),
                             const SizedBox(height: 8),
+                            if (ownerName == null)
                             Text(
                               [
                                 'Your know your finances and have realistic life goals. What a Boomer.',
@@ -151,7 +161,16 @@ class HouseScreen extends StatelessWidget {
                               ][houseWithLoan.score],
                               style: const TextStyle(fontSize: 14),
                               textAlign: TextAlign.center,
-                            ),
+                            ) else Text(
+                              [
+                                'Has their finances in order and realistic life goals. What a Boomer.',
+                                'Even a blind squirrel finds an acorn once in a while.',
+                                'Maybe they are planning something?',
+                                'What an idiot.'
+                              ][houseWithLoan.score],
+                              style: const TextStyle(fontSize: 14),
+                              textAlign: TextAlign.center,
+                            )
                           ],
                         ),
                       ),

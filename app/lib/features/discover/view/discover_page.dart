@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
@@ -42,7 +43,14 @@ class DiscoverPage extends StatelessWidget {
 
                 return Stack(
                   children: [
-                    HouseCard(house: house),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        context.beamToNamed('/house/${house.id}', data: house,
+                        popToNamed: '/discover');
+                      },
+                      child: HouseCard(house: house),
+                    ),
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Padding(
@@ -71,7 +79,8 @@ class DiscoverPage extends StatelessWidget {
                                 const SizedBox(width: 2),
                                 Text(
                                   house.likes.length.toString(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(width: 4),
                               ],

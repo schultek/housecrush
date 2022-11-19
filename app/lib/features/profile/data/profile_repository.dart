@@ -31,3 +31,10 @@ final hasProfileRepository = FutureProvider((ref) async {
   var profile = await ref.watch(profileRepository.future);
   return profile != null;
 });
+
+
+final userNameByIdProvider = FutureProvider.family((ref, String id) async {
+  var firestore = await ref.watch(firestoreRepository.future);
+  var doc = await firestore.collection('users').doc(id).get();
+  return doc.get('name') as String?;
+});

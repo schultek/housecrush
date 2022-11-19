@@ -64,10 +64,8 @@ class _ProfileFormState extends State<ProfileForm> {
       value = (value / 100).roundToDouble() * 100;
     } else if (value < 10000) {
       value = (value / 1000).roundToDouble() * 1000;
-    } else if (value < 100000) {
-      value = (value / 10000).roundToDouble() * 10000;
     } else {
-      value = (value / 100000).roundToDouble() * 100000;
+      value = (value / 10000).roundToDouble() * 10000;
     }
     return value;
   }
@@ -101,8 +99,11 @@ class _ProfileFormState extends State<ProfileForm> {
           onChanged: (value) {
             setState(() {
               currentIncomeLog = value;
+              if (expectedIncomeLog < currentIncomeLog) {
+                expectedIncomeLog = currentIncomeLog;
+              }
             });
-            widget.onCurrentIncomeChanged?.call(currentIncome);
+            widget.onCurrentIncomeChanged.call(currentIncome);
           },
         ),
         const SizedBox(height: 20),
@@ -117,13 +118,13 @@ class _ProfileFormState extends State<ProfileForm> {
         ),
         Slider(
           value: currentSavingsLog,
-          min: 1,
+          min: 3,
           max: 6,
           onChanged: (value) {
             setState(() {
               currentSavingsLog = value;
             });
-            widget.onSavingsChanged?.call(currentSavings);
+            widget.onSavingsChanged.call(currentSavings);
           },
         ),
         const SizedBox(height: 20),
@@ -145,13 +146,16 @@ class _ProfileFormState extends State<ProfileForm> {
         ),
         Slider(
           value: expectedIncomeLog,
-          min: 1,
+          min: 3,
           max: 7,
           onChanged: (value) {
             setState(() {
               expectedIncomeLog = value;
+              if (expectedIncomeLog < currentIncomeLog) {
+                currentIncomeLog = expectedIncomeLog;
+              }
             });
-            widget.onExpectedIncomeChanged?.call(expectedIncome);
+            widget.onExpectedIncomeChanged.call(expectedIncome);
           },
         ),
       ],

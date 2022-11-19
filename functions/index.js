@@ -1,47 +1,37 @@
-
 //import fetch from 'node-fetch';
-function intMO (price, savings){
-    var bc = 0.0375*price;
-    var nc = price*0.02;
-    var tt = price*0.035;
+function intMO(price, savings) {
+    var bc = 0.0375 * price;
+    var nc = price * 0.02;
+    var tt = price * 0.035;
     return {
-        "caseDto":
-        {
-            "estate":
-            {
+        "caseDto": {
+            "estate": {
                 "zip": "80331",
                 "city": "München",
                 "federalState": "DE-BY"
             },
-            "mainApplicant":
-            {
+            "mainApplicant": {
                 "city": "",
                 "federalState": "",
                 "netSalary": 0
             },
-            "capital":
-            {
+            "capital": {
                 "equityCash": savings
             },
-            "venture":
-            {
+            "venture": {
                 "reason": "KaufBest",
                 "priceBuilding": price,
                 "percentageBroker": 3.57,
                 "percentageNotary": 2,
                 "percentageTax": 3.5,
-                "shownFunding":
-                {
+                "shownFunding": {
                     "equityCash": savings,
-                    "loans":
-                    [
-                        {
-                            "amount": price - savings + bc + nc + tt,
-                            "maturity": 15,
-                            "fullRepayment": false,
-                            "amortisation": 2
-                        }
-                    ]
+                    "loans": [{
+                        "amount": price - savings + bc + nc + tt,
+                        "maturity": 15,
+                        "fullRepayment": false,
+                        "amortisation": 2
+                    }]
                 },
                 "brokerCosts": bc,
                 "notaryCosts": nc,
@@ -64,8 +54,11 @@ admin.initializeApp();
 
 // Listens for new messages added to /messages/:documentId/original and creates an
 // uppercase version of the message to /messages/:documentId/uppercase
-exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1GB'}).firestore.document('/houses/{documentId}')
-    .onCreate(async(snap, context) => {
+exports.addConfigurationStr = functions.runWith({
+        timeoutSeconds: 540,
+        memory: '1GB'
+    }).firestore.document('/houses/{documentId}')
+    .onCreate(async (snap, context) => {
         // Grab the current value of what was written to Firestore.
         const userid = snap.data().owner;
 
@@ -77,40 +70,40 @@ exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1
 
         // Access the parameter `{documentId}` with `context.params`
         functions.logger.log('Got', context.params.documentId, userid, type, size, area);
-        
-        var typeprice = 1000;   //in €
-        var sizeqm = 100;       //in qm
-        var areafactor = 1.0;   //in %/100
+
+        var typeprice = 1000; //in €
+        var sizeqm = 100; //in qm
+        var areafactor = 1.0; //in %/100
 
         if (type == "castle") {
             typeprice = 8000;
-        } else if (type == "home"){
+        } else if (type == "home") {
             typeprice = 4000;
-        } else if (type == "cabin"){
+        } else if (type == "cabin") {
             typeprice = 2000;
-        } else if (type == "carton"){
+        } else if (type == "carton") {
             typeprice = 500;
         }
 
         sizeqm = size * 250;
 
-        if (area == "mountain"){
+        if (area == "mountain") {
             areafactor = 1.2;
-        } else if (area == "arctic"){
+        } else if (area == "arctic") {
             areafactor = 0.9;
-        } else if (area == "island"){
+        } else if (area == "island") {
             areafactor = 1.7;
-        }else if (area == "bridge"){
+        } else if (area == "bridge") {
             areafactor = 0.8;
-        }else if (area == "jungle"){
+        } else if (area == "jungle") {
             areafactor = 0.7;
-        }else if (area == "slum"){
+        } else if (area == "slum") {
             areafactor = 0.4;
-        }else if (area == "city"){
+        } else if (area == "city") {
             areafactor = 1.3;
         }
 
-        price = sizeqm*typeprice*areafactor;
+        price = sizeqm * typeprice * areafactor;
 
         if (eco != null) {
             if (eco < 2) {
@@ -122,13 +115,17 @@ exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1
 
         if (specials.includes('alpaka')) {
             price += 2500;
-        } else if (specials.includes('pot')) {
+        }
+        if (specials.includes('pot')) {
             price += 5;
-        } else if (specials.includes('david')) {
+        }
+        if (specials.includes('david')) {
             price += 300000000;
-        } else if (specials.includes('palm')) {
+        }
+        if (specials.includes('palm')) {
             price += 5000;
-        } else if (specials.includes('pool')) {
+        }
+        if (specials.includes('pool')) {
             price += 20000;
         }
 
@@ -136,10 +133,15 @@ exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1
 
         let startIncome = qsnap.data().currentIncome;
         let endIncome = qsnap.data().expectedIncome;
+
+        if (endIncome <= startIncome) {
+            endIncome = startIncome + 1;
+        }
+
         let savings = qsnap.data().currentSavings;
         let presavingPeriod = 0;
 
-        while (savings < 0.11*price) {
+        while (savings < 0.11 * price) {
 
             presavingPeriod += 1;
 
@@ -154,55 +156,60 @@ exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1
         }
 
         var req = JSON.stringify(intMO(price, savings));
-        let error = false;
+        let error;
         var response = await fetch('https://www.interhyp.de/customer-generation/interest/marketOverview', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: req
-        })
-        .then(response => response.json())
-        .catch((e) => error = true)
-        
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: req
+            })
+            .then(response => response.json())
+            .catch((e) => error = e)
+
         let bank = "None";
         let loan = 0;
         let monthlyPayment = 0;
         let loanYears = 0;
 
-        if(error==false){
-            let [ parsedLoan, _ ] = JSON.parse(JSON.stringify(response));
-             bank = parsedLoan.bankDetails.bankName;
-             loan = parsedLoan.loanAmount;
-             monthlyPayment = parsedLoan.monthlyPayment;
-             loanYears = parsedLoan.totalDuration.years;
+        if (error == null) {
+            let [parsedLoan, _] = JSON.parse(JSON.stringify(response));
+            bank = parsedLoan.bankDetails.bankName;
+            loan = parsedLoan.loanAmount;
+            monthlyPayment = parsedLoan.monthlyPayment;
+            loanYears = parsedLoan.totalDuration.years;
+            functions.logger.log("got loan: " + loan + "€, " + monthlyPayment + " €/mo");
+        } else {
+            functions.logger.log("error on requesting loan: " + error);
         }
-        
+
         //calculate wait time
         //y=ln(c1*x + c2)
-        c2 = Math.exp(startIncome/10000)
-        c1 = (Math.exp(endIncome/10000)-c2)/20
-        
+        c2 = Math.exp(startIncome / 10000)
+        c1 = (Math.exp(endIncome / 10000) - c2) / 20
+
         let cost = loan;
-        if (cost == 0){
+        if (cost == 0) {
             cost = price;
         }
         let i = 0;
         let savedSum = 0;
         let yearSaving = new Array();
         let yearSavingAcc = new Array();
-        while(savedSum<price) {
-            yearSaving.push(12*Math.log(c1*i + c2)*1000);
+        while (savedSum < price) {
+            yearSaving.push(12 * Math.log(c1 * i + c2) * 1000);
             savedSum = savedSum + yearSaving[i];
             yearSavingAcc.push(savedSum);
             i = i + 1;
         }
 
         let waitYears = 0;
-        while(waitYears<yearSaving.length){
+        while (waitYears < yearSaving.length) {
             let lnSum = 0;
-            for(let i = 0; i < loanYears; i++){
-                lnSum = lnSum + yearSaving[waitYears+i];
+            for (let i = 0; i < loanYears; i++) {
+                lnSum = lnSum + yearSaving[waitYears + i];
             }
-            if(lnSum >= price - yearSavingAcc[waitYears]){
+            if (lnSum >= price - yearSavingAcc[waitYears]) {
                 break;
             }
             waitYears = waitYears + 1;
@@ -215,5 +222,14 @@ exports.addConfigurationStr = functions.runWith({timeoutSeconds: 540, memory: '1
         // You must return a Promise when performing asynchronous tasks inside a Functions such as
         // writing to Firestore.
         // Setting an 'uppercase' field in Firestore document returns a Promise.
-        return snap.ref.set({price, waitYears, loanYears, monthlyPayment, bank, loan}, {merge: true});
+        return snap.ref.set({
+            price,
+            waitYears,
+            loanYears,
+            monthlyPayment,
+            bank,
+            loan
+        }, {
+            merge: true
+        });
     });
