@@ -2,68 +2,48 @@ import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_context/riverpod_context.dart';
 
-import '../../features/common/data/default_page_repository.dart';
-import '../../features/workinstructions/view/core/workinstruction_loading_screen.dart';
-import '../../generated/l10n.dart';
-import '../layouts/home_layout.dart';
+import '../../features/profile/view/profile_screen.dart';
 import '../layouts/main_layout.dart';
 
 class MainLocation extends BeamLocation<BeamState> {
   MainLocation([super.route]);
 
-  static List<String> pages = ['tasks', 'project', 'apps', 'qr'];
-
-  bool get isWiOpen => state.pathPatternSegments.firstOrNull == 'wi';
-
-  static String popToNamed(BuildContext context) {
-    var index = context.read(defaultPageRepository);
-    if (index == null && context.currentBeamLocation is MainLocation) {
-      index = (context.currentBeamLocation as MainLocation).getPageIndex(context);
-    }
-    return '/${pages[index ?? 0]}';
-  }
+  static const List<String> pages = ['design', 'discover', 'friends'];
 
   int getPageIndex(BuildContext context) {
     var segment = state.pathPatternSegments.first;
     var index = pathPatterns.map((p) => p.toString().split('/')[1]).toList().indexOf(segment);
-    return index < 4 ? index : context.read(defaultPageRepository) ?? 0;
+    return index < 3 ? index : 0;
   }
 
   @override
   BeamState createState(RouteInformation routeInformation) {
     var uri = Uri.tryParse(routeInformation.location ?? '');
-    if (pages.contains(uri?.pathSegments.firstOrNull)) {
-      return super.createState(routeInformation);
-    } else if ((uri?.pathSegments.length ?? 0) > 1 && uri?.pathSegments.firstOrNull == 'wi') {
+    if (pages.contains(uri?.pathSegments.firstOrNull) || uri?.pathSegments.firstOrNull == 'profile') {
       return super.createState(routeInformation);
     } else {
-      return super.createState(const RouteInformation(location: '/tasks'));
+      return super.createState(RouteInformation(location: '/${pages.first}'));
     }
   }
 
   String titleFor(BuildContext context, String? segment) {
     if (segment == pages[0]) {
-      return S.of(context).mt_title;
+      return 'Design your House';
     } else if (segment == pages[1]) {
-      return S.of(context).mt_label;
+      return 'Discover Houses';
     } else if (segment == pages[2]) {
-      return S.of(context).as_title;
-    } else if (segment == pages[3]) {
-      return S.of(context).bs_title;
+      return 'Friends';
     } else {
-      return S.of(context).mt_title;
+      return 'HouseCrush';
     }
   }
 
   @override
   Widget builder(BuildContext context, Widget navigator) {
-    return MainLayout(
-      child: ProviderScope(
-        overrides: [homePageIndexProvider.overrideWithValue(getPageIndex(context))],
-        child: navigator,
-      ),
+    return ProviderScope(
+      overrides: [pageIndexProvider.overrideWithValue(getPageIndex(context))],
+      child: navigator,
     );
   }
 
@@ -71,23 +51,19 @@ class MainLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [
       BeamPage(
-        key: const ValueKey('home'),
+        key: const ValueKey('main'),
         title: titleFor(context, state.pathPatternSegments.firstOrNull),
-        child: HomeLayout(),
+        child: MainLayout(),
       ),
-      if (state.uri.pathSegments[0] == 'wi' && state.pathParameters['workinstructionId'] != null)
-        BeamPage(
-          key: ValueKey(state.uri.path),
-          title: 'Workinstruction',
-          child: WillPopScope(
-            onWillPop: () async => false,
-            child: const WorkinstructionLoadingScreen(),
-          ),
-          popToNamed: popToNamed(context),
+      if (state.uri.pathSegments.first == 'profile')
+        const BeamPage(
+          key: ValueKey('profile'),
+          title: 'Profile',
+          child: ProfileScreen(),
         ),
     ];
   }
 
   @override
-  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p'), '/wi/:workinstructionId'];
+  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p'), '/profile'];
 }

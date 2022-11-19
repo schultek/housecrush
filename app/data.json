@@ -1,0 +1,45 @@
+{
+  "users": {
+    "kili": {
+      "name": "Kilian",
+      "profileUrl": "...",
+
+      "friends": {
+
+      },
+
+      "budget": {
+        "start_income": 123, // per year
+        "start_savings": 123,
+        "target_income": 555, // per year, after 20y
+        "character": "gambler" // enum
+      }
+
+    }
+  },
+  "houses": {
+    "abcdef": {
+      "owner": "kili",
+
+      "location": "island", // enum
+      "type": "villa", // enum 
+      "size": 123 // qm
+    }
+  },
+  "configuration": {
+    "default": {
+      "locations": {
+        "island": {
+          "value": 123,
+          "imageUrl": "..." 
+        }
+      },
+      "types": {
+        "villa": {
+          "value": 456,
+          "imageUrl": "..."
+        }
+      }
+    }
+  }
+}

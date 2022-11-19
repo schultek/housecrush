@@ -2,7 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../features/signin/view/signin_screen.dart';
+import '../../features/auth/view/signin_screen.dart';
 
 class SignInLocation extends BeamLocation<BeamState> {
   SignInLocation([super.route]);

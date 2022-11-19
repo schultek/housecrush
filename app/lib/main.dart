@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_context/riverpod_context.dart';
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 import 'constants/theme.dart';
 import 'features/common/data/storage_repository.dart';

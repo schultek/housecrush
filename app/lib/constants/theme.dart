@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 final hcTheme = ThemeData(
-  primaryColor: hcDark[700],
+  colorSchemeSeed: hcRed[600],
   fontFamily: 'Axel',
   hintColor: Colors.white24,
   canvasColor: hcDark[500],
   textTheme: const TextTheme(
-          displayLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 28),
+          displayLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 40),
           displayMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 25),
           displaySmall: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
           headlineLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14, letterSpacing: 0.6),

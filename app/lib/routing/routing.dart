@@ -1,29 +1,43 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:housecrush_app/features/auth/data/auth_repository.dart';
 import 'package:housecrush_app/routing/locations/signin_location.dart';
 
+import '../features/profile/data/profile_repository.dart';
+import 'locations/create_profile_location.dart';
 import 'locations/loading_location.dart';
-import 'locations/placeholder_location.dart';
+import 'locations/main_location.dart';
 
-enum RoutingState { loading, signIn, main }
+enum RoutingState { loading, signIn, main, createProfile }
 
-final routingStateProvider =
-    StateNotifierProvider<RoutingStateNotifier, RoutingState>((ref) => RoutingStateNotifier(ref));
-
-// TODO: connect to auth / version state providers and emit correct routing state
-class RoutingStateNotifier extends StateNotifier<RoutingState> {
-  RoutingStateNotifier(this.ref) : super(RoutingState.signIn) {
-  }
-
-  final Ref ref;
-
-}
+final routingStateProvider = Provider((ref) {
+  return ref.watch(userRepository).maybeWhen(
+        data: (user) {
+          if (user != null) {
+            return ref.watch(hasProfileRepository).maybeWhen(
+                  data: (hasProfile) {
+                    if (hasProfile) {
+                      return RoutingState.main;
+                    } else {
+                      return RoutingState.createProfile;
+                    }
+                  },
+                  orElse: () => RoutingState.loading,
+                );
+          } else {
+            return RoutingState.signIn;
+          }
+        },
+        orElse: () => RoutingState.loading,
+      );
+});
 
 // TODO: replace placeholder locations with real locations when implemented
 final locationsByStateProvider = Provider((ref) => {
       RoutingState.loading: LoadingLocation.new,
       RoutingState.signIn: SignInLocation.new,
-      RoutingState.main: PlaceholderLocation.new, // MainLocation.new
+      RoutingState.main: MainLocation.new,
+      RoutingState.createProfile: CreateProfileLocation.new,
     });
 
 final routerDelegateProvider = Provider((ref) {
@@ -50,6 +64,7 @@ final routerDelegateProvider = Provider((ref) {
             nextLocation = from.continueTo ?? nextLocation;
           }
           var next = locationsByState[state]!(nextLocation);
+          print("GUARD NEXT $from $to $next");
           return next;
         },
       )
@@ -71,10 +86,7 @@ final backButtonDispatcherProvider = Provider((ref) {
   return BeamerBackButtonDispatcher(
     delegate: ref.watch(routerDelegateProvider),
     onBack: (delegate) async {
-      var location = delegate.currentBeamLocation;
-      /*if (location is MainLocation && location.isWiOpen) {
-        return true; // Prevents exiting wi via back button
-      } else */if (delegate.navigator.canPop()) {
+      if (delegate.navigator.canPop()) {
         return delegate.navigator.maybePop();
       } else if (delegate.canBeamBack) {
         return delegate.beamBack();
