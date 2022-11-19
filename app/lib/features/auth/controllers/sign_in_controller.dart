@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/features/auth/data/auth_repository.dart';
+import 'package:housecrush_app/features/auth/data/user_name_repository.dart';
 import 'package:housecrush_app/features/common/data/device_id_repository.dart';
 
 import '../../../utils/logger.dart';
@@ -35,6 +36,6 @@ class SignInNotifier extends Notifier<void> {
       credential = await auth.signInWithEmailAndPassword(email: email, password: deviceId);
     }
 
-    await credential.user!.updateDisplayName(name);
+    ref.read(userNameRepository.notifier).state = name;
   }
 }

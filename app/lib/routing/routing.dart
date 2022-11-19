@@ -11,7 +11,7 @@ import 'locations/main_location.dart';
 enum RoutingState { loading, signIn, main, createProfile }
 
 final routingStateProvider = Provider((ref) {
-  return ref.watch(userRepository).maybeWhen(
+  var s = ref.watch(userRepository).maybeWhen(
         data: (user) {
           if (user != null) {
             return ref.watch(hasProfileRepository).maybeWhen(
@@ -30,6 +30,7 @@ final routingStateProvider = Provider((ref) {
         },
         orElse: () => RoutingState.loading,
       );
+  return s;
 });
 
 // TODO: replace placeholder locations with real locations when implemented
@@ -64,7 +65,6 @@ final routerDelegateProvider = Provider((ref) {
             nextLocation = from.continueTo ?? nextLocation;
           }
           var next = locationsByState[state]!(nextLocation);
-          print("GUARD NEXT $from $to $next");
           return next;
         },
       )

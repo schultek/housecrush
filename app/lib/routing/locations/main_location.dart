@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/house/view/new_house_screen.dart';
 import '../../features/profile/view/profile_screen.dart';
 import '../layouts/main_layout.dart';
 
@@ -61,9 +62,15 @@ class MainLocation extends BeamLocation<BeamState> {
           title: 'Profile',
           child: ProfileScreen(),
         ),
+      if (state.uri.path == '/design/new')
+        const BeamPage(
+          key: ValueKey('new_house'),
+          title: 'Design a new Dream House',
+          child: NewHouseScreen(),
+        ),
     ];
   }
 
   @override
-  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p'), '/profile'];
+  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p/*'), '/profile'];
 }

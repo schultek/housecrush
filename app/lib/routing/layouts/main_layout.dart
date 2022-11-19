@@ -17,15 +17,11 @@ import '../locations/main_location.dart';
 /// hold the current page index value.
 final pageIndexProvider = Provider((ref) => 0);
 
-/// Provides a boolean value indicating if the current page is active.
-///
-/// This provider is scoped to the pages of [MainLayout] and
-/// must only be used under this subtree.
-final pageActiveProvider = Provider((ref) => false);
-
 /// The home layout responsible for switching between the four main pages and
 /// listening to barcode scans in the background.
 class MainLayout extends StatelessWidget {
+  MainLayout({super.key});
+
   static void changePage(BuildContext context, int nextIndex) {
     var index = max(0, min(2, nextIndex));
     if (index == context.read(pageIndexProvider)) return;
@@ -145,11 +141,7 @@ class _StackSwitcherState extends State<StackSwitcher> with TickerProviderStateM
       )),
       child: Builder(builder: (context) {
         var isActive = context.watch(pageIndexProvider.select((i) => i == index));
-        return ProviderScope(
-          key: GlobalObjectKey('home_page_scope_$index'),
-          overrides: [pageActiveProvider.overrideWithValue(isActive)],
-          child: widget.children[index](),
-        );
+        return widget.children[index]();
       }),
     );
   }

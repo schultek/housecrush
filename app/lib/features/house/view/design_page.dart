@@ -1,5 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
+import 'package:housecrush_app/features/house/data/houses_repository.dart';
+import 'package:housecrush_app/features/profile/data/profile_repository.dart';
+import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../profile/view/profile_button.dart';
 
@@ -12,20 +17,34 @@ class DesignPage extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
-            child:
-                Align(alignment: Alignment.centerLeft, child: ProfileButton(),),
+          SliverToBoxAdapter(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: context.watch(hasProfileRepository).valueOrNull ?? false
+                  ? const ProfileButton()
+                  : const SizedBox(height: 32),
+            ),
           ),
           const SliverPadding(padding: EdgeInsets.only(top: 10)),
           SliverToBoxAdapter(
-            child: Text(
-              'Design your Dream House.',
-              style: Theme.of(context).textTheme.displayLarge,
+            child: Column(
+              children: [
+                Text(
+                  'Design your Dream House.',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    context.beamToNamed('/design/new');
+                  },
+                  child: Text('Design'),
+                ),
+              ],
             ),
           ),
           SliverList(
             delegate: SliverChildListDelegate(
-              List.generate(20, (index) {
+              (context.watch(housesRepository).valueOrNull ?? []).map((house) {
                 return Container(
                   height: 100,
                   margin: const EdgeInsets.only(top: 20),
@@ -33,8 +52,9 @@ class DesignPage extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: hcDark[500],
                   ),
+                  child: const Text('House'),
                 );
-              }),
+              }).toList(),
             ),
           ),
         ],

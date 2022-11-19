@@ -1,8 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:housecrush_app/features/auth/data/auth_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
+
+import '../../features/auth/data/user_name_repository.dart';
 
 // TODO remove when all locations are implemented
 class PlaceholderLocation extends BeamLocation<BeamState> {

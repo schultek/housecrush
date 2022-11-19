@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:dart_mappable/internals.dart';
 
+import 'features/house/domain/house.dart';
 import 'features/profile/domain/profile_model.dart';
 
 
@@ -9,6 +10,7 @@ import 'features/profile/domain/profile_model.dart';
 var _mappers = <BaseMapper>{
   // class mappers
   UserProfileMapper._(),
+  HouseMapper._(),
   // enum mappers
   // custom mappers
 };
@@ -50,6 +52,42 @@ class _UserProfileCopyWithImpl<$R> extends BaseCopyWith<UserProfile, $R> impleme
   _UserProfileCopyWithImpl(UserProfile value, Then<UserProfile, $R> then) : super(value, then);
 
   @override $R call({String? name, Object? profileUrl = $none}) => $then(UserProfile(name ?? $value.name, or(profileUrl, $value.profileUrl)));
+}
+
+class HouseMapper extends BaseMapper<House> {
+  HouseMapper._();
+
+  @override Function get decoder => decode;
+  House decode(dynamic v) => checked(v, (Map<String, dynamic> map) => fromMap(map));
+  House fromMap(Map<String, dynamic> map) => House(id: Mapper.i.$get(map, 'id'), owner: Mapper.i.$get(map, 'owner'), likes: Mapper.i.$getOpt(map, 'likes') ?? const []);
+
+  @override Function get encoder => (House v) => encode(v);
+  dynamic encode(House v) => toMap(v);
+  Map<String, dynamic> toMap(House h) => {'id': Mapper.i.$enc(h.id, 'id'), 'owner': Mapper.i.$enc(h.owner, 'owner'), 'likes': Mapper.i.$enc(h.likes, 'likes')};
+
+  @override String stringify(House self) => 'House(id: ${Mapper.asString(self.id)}, owner: ${Mapper.asString(self.owner)}, likes: ${Mapper.asString(self.likes)})';
+  @override int hash(House self) => Mapper.hash(self.id) ^ Mapper.hash(self.owner) ^ Mapper.hash(self.likes);
+  @override bool equals(House self, House other) => Mapper.isEqual(self.id, other.id) && Mapper.isEqual(self.owner, other.owner) && Mapper.isEqual(self.likes, other.likes);
+
+  @override Function get typeFactory => (f) => f<House>();
+}
+
+extension HouseMapperExtension  on House {
+  String toJson() => Mapper.toJson(this);
+  Map<String, dynamic> toMap() => Mapper.toMap(this);
+  HouseCopyWith<House> get copyWith => HouseCopyWith(this, $identity);
+}
+
+abstract class HouseCopyWith<$R> {
+  factory HouseCopyWith(House value, Then<House, $R> then) = _HouseCopyWithImpl<$R>;
+  $R call({String? id, String? owner, List<String>? likes});
+  $R apply(House Function(House) transform);
+}
+
+class _HouseCopyWithImpl<$R> extends BaseCopyWith<House, $R> implements HouseCopyWith<$R> {
+  _HouseCopyWithImpl(House value, Then<House, $R> then) : super(value, then);
+
+  @override $R call({String? id, String? owner, List<String>? likes}) => $then(House(id: id ?? $value.id, owner: owner ?? $value.owner, likes: likes ?? $value.likes));
 }
 
 

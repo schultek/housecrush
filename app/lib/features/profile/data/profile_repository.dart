@@ -29,5 +29,6 @@ final profileRepository = StreamProvider<UserProfile?>((ref) async* {
 
 final hasProfileRepository = FutureProvider((ref) async {
   var profile = await ref.watch(profileRepository.future);
+  print("PRIF $profile");
   return profile != null;
 });

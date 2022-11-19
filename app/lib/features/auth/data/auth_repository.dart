@@ -18,10 +18,6 @@ final userIdRepository = Provider((ref) {
   return ref.watch(userRepository).whenOrNull<String?>(data: (user) => user?.uid);
 });
 
-final userNameRepository = Provider((ref) {
-  return ref.watch(userRepository).whenOrNull<String?>(data: (user) => user?.displayName);
-});
-
 final isSignedInRepository = Provider((ref) {
   return ref.watch(userIdRepository) != null;
 });
