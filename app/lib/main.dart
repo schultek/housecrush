@@ -33,6 +33,24 @@ class HouseCrushApp extends StatelessWidget {
         routerDelegate: context.watch(routerDelegateProvider),
         routeInformationParser: BeamerParser(),
         backButtonDispatcher: context.watch(backButtonDispatcherProvider),
+        builder: (context, child) {
+          var size = MediaQuery.of(context).size;
+          print(size.aspectRatio);
+          if (size.aspectRatio > 3/4) {
+            return Container(
+              color: Colors.black,
+              child: Center(
+                child: ClipRect(
+                  child: AspectRatio(
+                    aspectRatio: 3/4,
+                    child: child ?? Container(),
+                  ),
+                ),
+              ),
+            );
+          }
+          return child ?? Container();
+        },
       ),
     );
   }

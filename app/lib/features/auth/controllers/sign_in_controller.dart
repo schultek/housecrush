@@ -24,16 +24,13 @@ class SignInNotifier extends Notifier<void> {
     String deviceId = ref.read(deviceIdRepository)!;
     String idHash = sha1.convert(utf8.encode(deviceId)).toString();
 
-    Log.d('URI: $deviceId ($idHash)');
-
     var email = '$idHash@housecrush.schultek.de';
     var results = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
 
-    UserCredential credential;
     if (results.isEmpty) {
-      credential = await auth.createUserWithEmailAndPassword(email: email, password: deviceId);
+      await auth.createUserWithEmailAndPassword(email: email, password: deviceId);
     } else {
-      credential = await auth.signInWithEmailAndPassword(email: email, password: deviceId);
+      await auth.signInWithEmailAndPassword(email: email, password: deviceId);
     }
 
     ref.read(userNameRepository.notifier).state = name;

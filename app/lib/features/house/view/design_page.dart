@@ -31,14 +31,12 @@ class DesignPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child:
-                      context.watch(hasProfileRepository).valueOrNull ?? false
+                context.watch(hasProfileRepository).valueOrNull ?? false
                           ? const ProfileButton()
                           : const SizedBox(height: 32),
-                ),
+
                 const SizedBox(height: 10),
                 Text(
                   'Design your Dream House.',
