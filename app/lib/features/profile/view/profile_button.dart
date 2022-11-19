@@ -12,10 +12,7 @@ class ProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var profile = context.watch(profileRepository).value!;
-    return InkWell(
-      borderRadius: BorderRadius.circular(100),
-      onTap: () {},
-      child: ClipRRect(
+    return ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Material(
           color: hcDark[300],
@@ -39,7 +36,7 @@ class ProfileButton extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+
         ),
       ),
     );

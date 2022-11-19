@@ -21,10 +21,10 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
   HouseCreator creator = HouseCreator();
 
   Future<void> finish() async {
-    await context
+    var house = await context
         .read(houseController)
         .createNewHouse(creator);
-    context.beamToReplacementNamed('/design');
+    context.beamToReplacementNamed('/house/${house.id}', data: house);
   }
 
   @override

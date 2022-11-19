@@ -47,28 +47,37 @@ class DesignPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 if (houses.isEmpty)
                   Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 80),
-                      child: Center(
-                        child: Opacity(
-                          opacity: 0.4,
-                          child: Text('Add a house by cicking \'+\'',
-                              style: Theme.of(context).textTheme.bodySmall),
-                        ),
-                      )),
+                    padding: const EdgeInsets.symmetric(vertical: 80),
+                    child: Center(
+                      child: Opacity(
+                        opacity: 0.4,
+                        child: Text('Add a house by cicking \'+\'',
+                            style: Theme.of(context).textTheme.bodySmall),
+                      ),
+                    ),
+                  ),
                 ...houses.map((house) {
-                  return Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Dismissible(
-                      key: ValueKey(house.id),
-                      direction: DismissDirection.endToStart,
-                      confirmDismiss: (_) async {
-                        await context.read(houseController).deleteHouse(house.id);
-                        return true;
-                      },
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: HouseCard(house: house),
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      context.beamToNamed('/house/${house.id}', data: house);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Dismissible(
+                        key: ValueKey(house.id),
+                        direction: DismissDirection.endToStart,
+                        confirmDismiss: (_) async {
+                          await context
+                              .read(houseController)
+                              .deleteHouse(house.id);
+                          return true;
+                        },
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Hero(tag: 'hero-${house.id}',child: HouseCard(house: house)),
+                        ),
                       ),
                     ),
                   );

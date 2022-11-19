@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
+import '../../../common/view/back_button.dart';
 import '../../domain/house.dart';
 import '../../domain/locations.dart';
 
@@ -34,7 +35,9 @@ class _ChooseLocationState extends State<ChooseLocation> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          GoBackButton(),
           Text(
             'Choose a location.',
             style: Theme.of(context).textTheme.displayLarge,
@@ -95,9 +98,11 @@ class _ChooseLocationState extends State<ChooseLocation> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            locations[location]![0],
-            style: Theme.of(context).textTheme.displaySmall,
+          Center(
+            child: Text(
+              locations[location]![0],
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
           ),
           const SizedBox(height: 40),
           ActionButton(

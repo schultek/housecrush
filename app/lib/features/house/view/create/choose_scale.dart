@@ -5,6 +5,7 @@ import 'package:riverpod_context/riverpod_context.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../common/view/action_button.dart';
+import '../../../common/view/back_button.dart';
 import '../../domain/locations.dart';
 
 class ChooseScale extends StatefulWidget {
@@ -26,7 +27,9 @@ class _ChooseScaleState extends State<ChooseScale> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const GoBackButton(),
           Text(
             'Set the scale.',
             style: Theme.of(context).textTheme.displayLarge,

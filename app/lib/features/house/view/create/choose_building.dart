@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:housecrush_app/features/common/view/back_button.dart';
 import 'package:housecrush_app/features/house/domain/house.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
@@ -25,7 +26,9 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          GoBackButton(),
           Text(
             'Choose a building.',
             style: Theme.of(context).textTheme.displayLarge,
@@ -83,9 +86,11 @@ class _ChooseBuildingState extends State<ChooseBuilding> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            buildings[building]![0],
-            style: Theme.of(context).textTheme.displaySmall,
+          Center(
+            child: Text(
+              buildings[building]![0],
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
           ),
           const SizedBox(height: 40),
           ActionButton(

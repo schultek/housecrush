@@ -3,6 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/house/domain/house.dart';
+import '../../features/house/view/house_screen.dart';
 import '../../features/house/view/new_house_screen.dart';
 import '../../features/profile/view/profile_screen.dart';
 import '../layouts/main_layout.dart';
@@ -21,7 +23,7 @@ class MainLocation extends BeamLocation<BeamState> {
   @override
   BeamState createState(RouteInformation routeInformation) {
     var uri = Uri.tryParse(routeInformation.location ?? '');
-    if (pages.contains(uri?.pathSegments.firstOrNull) || uri?.pathSegments.firstOrNull == 'profile') {
+    if (pages.contains(uri?.pathSegments.firstOrNull) || uri?.pathSegments.firstOrNull == 'profile' || uri?.pathSegments.firstOrNull == 'house') {
       return super.createState(routeInformation);
     } else {
       return super.createState(RouteInformation(location: '/${pages.first}'));
@@ -50,6 +52,8 @@ class MainLocation extends BeamLocation<BeamState> {
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
+    print(state.uri.path);
+    print(state.pathParameters);
     return [
       BeamPage(
         key: const ValueKey('main'),
@@ -68,9 +72,15 @@ class MainLocation extends BeamLocation<BeamState> {
           title: 'Design a new Dream House',
           child: NewHouseScreen(),
         ),
+      if (state.uri.path.startsWith('/house/') && state.pathParameters['id'] != null)
+        BeamPage(
+          key: ValueKey('house_${state.pathParameters['id']}'),
+          title: 'Your House',
+          child: HouseScreen(id: state.pathParameters['id'] as String, house: data is House ? data as House : null),
+        ),
     ];
   }
 
   @override
-  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p/*'), '/profile'];
+  List<Pattern> get pathPatterns => [...pages.map((p) => '/$p/*'), '/profile', '/house/:id'];
 }
