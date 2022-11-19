@@ -121,15 +121,15 @@ exports.addConfigurationStr = functions.firestore.document('/houses/{documentId}
         }
 
         if (specials.includes('alpaka')) {
-            price += '2500';
+            price += 2500;
         } else if (specials.includes('pot')) {
-            price += '5';
+            price += 5;
         } else if (specials.includes('david')) {
-            price += '300000000';
+            price += 300000000;
         } else if (specials.includes('palm')) {
-            price += '5000';
+            price += 5000;
         } else if (specials.includes('pool')) {
-            price += '20000';
+            price += 20000;
         }
 
         const qsnap = await admin.firestore().collection('users').doc(userid).get();

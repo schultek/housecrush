@@ -59,15 +59,15 @@ class HouseMapper extends BaseMapper<House> {
 
   @override Function get decoder => decode;
   House decode(dynamic v) => checked(v, (Map<String, dynamic> map) => fromMap(map));
-  House fromMap(Map<String, dynamic> map) => House(id: Mapper.i.$get(map, 'id'), owner: Mapper.i.$get(map, 'owner'), likes: Mapper.i.$getOpt(map, 'likes') ?? const [], location: Mapper.i.$getOpt(map, 'location'), building: Mapper.i.$getOpt(map, 'building'), scale: Mapper.i.$getOpt(map, 'scale'), specials: Mapper.i.$getOpt(map, 'specials') ?? const [], eco: Mapper.i.$getOpt(map, 'eco'));
+  House fromMap(Map<String, dynamic> map) => House(id: Mapper.i.$get(map, 'id'), owner: Mapper.i.$get(map, 'owner'), likes: Mapper.i.$getOpt(map, 'likes') ?? const [], location: Mapper.i.$getOpt(map, 'location'), building: Mapper.i.$getOpt(map, 'building'), scale: Mapper.i.$getOpt(map, 'scale'), specials: Mapper.i.$getOpt(map, 'specials') ?? const [], eco: Mapper.i.$getOpt(map, 'eco'), bank: Mapper.i.$getOpt(map, 'bank'), loan: Mapper.i.$getOpt(map, 'loan'), monthlyPayment: Mapper.i.$getOpt(map, 'monthlyPayment'), price: Mapper.i.$getOpt(map, 'price'), loanYears: Mapper.i.$getOpt(map, 'loanYears'), waitYears: Mapper.i.$getOpt(map, 'waitYears'));
 
   @override Function get encoder => (House v) => encode(v);
   dynamic encode(House v) => toMap(v);
-  Map<String, dynamic> toMap(House h) => {'id': Mapper.i.$enc(h.id, 'id'), 'owner': Mapper.i.$enc(h.owner, 'owner'), 'likes': Mapper.i.$enc(h.likes, 'likes'), 'location': Mapper.i.$enc(h.location, 'location'), 'building': Mapper.i.$enc(h.building, 'building'), 'scale': Mapper.i.$enc(h.scale, 'scale'), 'specials': Mapper.i.$enc(h.specials, 'specials'), 'eco': Mapper.i.$enc(h.eco, 'eco')};
+  Map<String, dynamic> toMap(House h) => {'id': Mapper.i.$enc(h.id, 'id'), 'owner': Mapper.i.$enc(h.owner, 'owner'), 'likes': Mapper.i.$enc(h.likes, 'likes'), 'location': Mapper.i.$enc(h.location, 'location'), 'building': Mapper.i.$enc(h.building, 'building'), 'scale': Mapper.i.$enc(h.scale, 'scale'), 'specials': Mapper.i.$enc(h.specials, 'specials'), 'eco': Mapper.i.$enc(h.eco, 'eco'), 'bank': Mapper.i.$enc(h.bank, 'bank'), 'loan': Mapper.i.$enc(h.loan, 'loan'), 'monthlyPayment': Mapper.i.$enc(h.monthlyPayment, 'monthlyPayment'), 'price': Mapper.i.$enc(h.price, 'price'), 'loanYears': Mapper.i.$enc(h.loanYears, 'loanYears'), 'waitYears': Mapper.i.$enc(h.waitYears, 'waitYears')};
 
-  @override String stringify(House self) => 'House(id: ${Mapper.asString(self.id)}, owner: ${Mapper.asString(self.owner)}, likes: ${Mapper.asString(self.likes)}, location: ${Mapper.asString(self.location)}, building: ${Mapper.asString(self.building)}, scale: ${Mapper.asString(self.scale)}, specials: ${Mapper.asString(self.specials)}, eco: ${Mapper.asString(self.eco)})';
-  @override int hash(House self) => Mapper.hash(self.id) ^ Mapper.hash(self.owner) ^ Mapper.hash(self.likes) ^ Mapper.hash(self.location) ^ Mapper.hash(self.building) ^ Mapper.hash(self.scale) ^ Mapper.hash(self.specials) ^ Mapper.hash(self.eco);
-  @override bool equals(House self, House other) => Mapper.isEqual(self.id, other.id) && Mapper.isEqual(self.owner, other.owner) && Mapper.isEqual(self.likes, other.likes) && Mapper.isEqual(self.location, other.location) && Mapper.isEqual(self.building, other.building) && Mapper.isEqual(self.scale, other.scale) && Mapper.isEqual(self.specials, other.specials) && Mapper.isEqual(self.eco, other.eco);
+  @override String stringify(House self) => 'House(id: ${Mapper.asString(self.id)}, owner: ${Mapper.asString(self.owner)}, likes: ${Mapper.asString(self.likes)}, location: ${Mapper.asString(self.location)}, building: ${Mapper.asString(self.building)}, scale: ${Mapper.asString(self.scale)}, specials: ${Mapper.asString(self.specials)}, eco: ${Mapper.asString(self.eco)}, bank: ${Mapper.asString(self.bank)}, loan: ${Mapper.asString(self.loan)}, monthlyPayment: ${Mapper.asString(self.monthlyPayment)}, price: ${Mapper.asString(self.price)}, loanYears: ${Mapper.asString(self.loanYears)}, waitYears: ${Mapper.asString(self.waitYears)})';
+  @override int hash(House self) => Mapper.hash(self.id) ^ Mapper.hash(self.owner) ^ Mapper.hash(self.likes) ^ Mapper.hash(self.location) ^ Mapper.hash(self.building) ^ Mapper.hash(self.scale) ^ Mapper.hash(self.specials) ^ Mapper.hash(self.eco) ^ Mapper.hash(self.bank) ^ Mapper.hash(self.loan) ^ Mapper.hash(self.monthlyPayment) ^ Mapper.hash(self.price) ^ Mapper.hash(self.loanYears) ^ Mapper.hash(self.waitYears);
+  @override bool equals(House self, House other) => Mapper.isEqual(self.id, other.id) && Mapper.isEqual(self.owner, other.owner) && Mapper.isEqual(self.likes, other.likes) && Mapper.isEqual(self.location, other.location) && Mapper.isEqual(self.building, other.building) && Mapper.isEqual(self.scale, other.scale) && Mapper.isEqual(self.specials, other.specials) && Mapper.isEqual(self.eco, other.eco) && Mapper.isEqual(self.bank, other.bank) && Mapper.isEqual(self.loan, other.loan) && Mapper.isEqual(self.monthlyPayment, other.monthlyPayment) && Mapper.isEqual(self.price, other.price) && Mapper.isEqual(self.loanYears, other.loanYears) && Mapper.isEqual(self.waitYears, other.waitYears);
 
   @override Function get typeFactory => (f) => f<House>();
 }
@@ -80,14 +80,14 @@ extension HouseMapperExtension  on House {
 
 abstract class HouseCopyWith<$R> {
   factory HouseCopyWith(House value, Then<House, $R> then) = _HouseCopyWithImpl<$R>;
-  $R call({String? id, String? owner, List<String>? likes, String? location, String? building, double? scale, List<String>? specials, int? eco});
+  $R call({String? id, String? owner, List<String>? likes, String? location, String? building, double? scale, List<String>? specials, int? eco, String? bank, double? loan, double? monthlyPayment, double? price, double? loanYears, double? waitYears});
   $R apply(House Function(House) transform);
 }
 
 class _HouseCopyWithImpl<$R> extends BaseCopyWith<House, $R> implements HouseCopyWith<$R> {
   _HouseCopyWithImpl(House value, Then<House, $R> then) : super(value, then);
 
-  @override $R call({String? id, String? owner, List<String>? likes, Object? location = $none, Object? building = $none, Object? scale = $none, List<String>? specials, Object? eco = $none}) => $then(House(id: id ?? $value.id, owner: owner ?? $value.owner, likes: likes ?? $value.likes, location: or(location, $value.location), building: or(building, $value.building), scale: or(scale, $value.scale), specials: specials ?? $value.specials, eco: or(eco, $value.eco)));
+  @override $R call({String? id, String? owner, List<String>? likes, Object? location = $none, Object? building = $none, Object? scale = $none, List<String>? specials, Object? eco = $none, Object? bank = $none, Object? loan = $none, Object? monthlyPayment = $none, Object? price = $none, Object? loanYears = $none, Object? waitYears = $none}) => $then(House(id: id ?? $value.id, owner: owner ?? $value.owner, likes: likes ?? $value.likes, location: or(location, $value.location), building: or(building, $value.building), scale: or(scale, $value.scale), specials: specials ?? $value.specials, eco: or(eco, $value.eco), bank: or(bank, $value.bank), loan: or(loan, $value.loan), monthlyPayment: or(monthlyPayment, $value.monthlyPayment), price: or(price, $value.price), loanYears: or(loanYears, $value.loanYears), waitYears: or(waitYears, $value.waitYears)));
 }
 
 

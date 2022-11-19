@@ -1,4 +1,7 @@
+import 'package:another_stepper/another_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:housecrush_app/constants/colors.dart';
 import 'package:housecrush_app/features/common/view/loading_screen.dart';
 import 'package:housecrush_app/features/house/controllers/house_controller.dart';
 import 'package:riverpod_context/riverpod_context.dart';
@@ -35,28 +38,222 @@ class HouseScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const GoBackButton(),
-                Text(
-                  'Your House.',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-                const SizedBox(height: 40),
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: Hero(
-                    tag: 'hero-${house.id}',
-                      child: HouseCard(house: house)),
-                ),
-              ],
-            ),
-          ),
+          child: Builder(builder: (context) {
+            var houseWithLoan =
+                context.watch(houseWithLoanController(id)).valueOrNull;
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const GoBackButton(),
+                      const Spacer(),
+                      house.loan == null
+                          ? loanLoader(house.id)
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                  Text(
+                    '${house.description}.',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                  const SizedBox(height: 20),
+                  if (houseWithLoan != null) ...[
+                    const SizedBox(height: 10),
+                    Text('${houseWithLoan.price!.toStringAsFixed(0)} €',
+                        style: const TextStyle(
+                          fontSize: 50,
+                        )),
+                  ],
+                  const SizedBox(height: 20),
+                  AspectRatio(
+                    aspectRatio: 4 / 3,
+                    child: Hero(
+                        tag: 'hero-${house.id}',
+                        child: HouseCard(house: house)),
+                  ),
+                  const SizedBox(height: 20),
+                  if (houseWithLoan != null)
+                    if (houseWithLoan.bank != 'None') ...[
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: hcDark[200],
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Found loan by ${houseWithLoan.bank} over'),
+                            Text(
+                              '${houseWithLoan.loan!.toStringAsFixed(0)} €',
+                              style: Theme.of(context).textTheme.displayMedium,
+                            ),
+                            const Text('with a monthly payment of'),
+                            Row(
+                              children: [
+                                Text(
+                                  '${houseWithLoan.monthlyPayment!.toStringAsFixed(0)} €/mo',
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text('over'),
+                                const SizedBox(width: 5),
+                                Text(
+                                  houseWithLoan.loanYears!.toStringAsFixed(0),
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text('years'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: hcDark[200],
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            const Text('Based on your income profile, you may '
+                                'be able to afford this loan in about'),
+                            Row(
+                              children: [
+                                Text(
+                                  houseWithLoan.waitYears!.toStringAsFixed(0),
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                    'year${houseWithLoan.waitYears! > 1 ? 's' : ''}.'),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            scoreGraph(houseWithLoan),
+                            const SizedBox(height: 8),
+                            Text(
+                              [
+                                'Your know your finances and have realistic life goals. What a Boomer.',
+                                'Wait a few years and safe well. Who knows...',
+                                'Seems a bit far fetched, ay?',
+                                "You don't seriously think you could ever afford this?"
+                              ][houseWithLoan.score],
+                              style: const TextStyle(fontSize: 14),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: hcDark[200],
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        child: Column(children: const [
+                          Text('Sorry, no bank offered a loan for this...'),
+                        ]),
+                      ),
+                    ],
+                ],
+              ),
+            );
+          }),
         ),
       ),
+    );
+  }
+
+  Widget loanLoader(String id) {
+    return Builder(builder: (context) {
+      var house = context.watch(houseWithLoanController(id));
+
+      if (house.isLoading) {
+        return Row(
+          children: const [
+            Text(
+              'Loading loan details...',
+              style: TextStyle(color: Colors.black45),
+            ),
+            SizedBox(width: 10),
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ],
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
+    });
+  }
+
+  Widget scoreGraph(House houseWithLoan) {
+    var score = houseWithLoan.score;
+
+    return AnotherStepper(
+      activeIndex: 3,
+      activeBarColor: hcDark[300]!,
+      barThickness: 3,
+      stepperList: [
+        StepperData(
+          title: StepperText('Realist'),
+          iconWidget: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: score == 0 ? Colors.green : hcDark[300],
+                borderRadius: const BorderRadius.all(Radius.circular(30))),
+            child: score == 0 ? const Center(child: Text('🥸')) : null,
+          ),
+        ),
+        StepperData(
+          title: StepperText('Optimist'),
+          iconWidget: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: score == 1 ? Colors.green : hcDark[300],
+                borderRadius: const BorderRadius.all(Radius.circular(30))),
+            child: score == 1 ? const Center(child: Text('😇')) : null,
+          ),
+        ),
+        StepperData(
+          title: StepperText('Dreamer'),
+          iconWidget: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: score == 2 ? Colors.green : hcDark[300],
+                borderRadius: const BorderRadius.all(Radius.circular(30))),
+            child: score == 2 ? const Center(child: Text('😶‍🌫️')) : null,
+          ),
+        ),
+        StepperData(
+          title: StepperText('Idiot'),
+          iconWidget: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: score == 3 ? Colors.green : hcDark[300],
+                borderRadius: const BorderRadius.all(Radius.circular(30))),
+            child: score == 3 ? const Center(child: Text('🥴')) : null,
+          ),
+        ),
+      ],
+      stepperDirection: Axis.horizontal,
+      iconWidth: 40, // Height that will be applied to all the stepper icons
+      iconHeight: 40, // Width that will be applied to all the stepper icons
     );
   }
 }
