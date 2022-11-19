@@ -25,5 +25,6 @@ class HouseCreator {
   String? location;
   String? building;
   double? scale;
+  List<String>? specials;
 
 }

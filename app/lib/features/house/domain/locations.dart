@@ -14,3 +14,11 @@ final buildings = {
   'carton': ['A Box', 'Karton8001067.png'],
   'castle': ['Castle', 'Schloss8001067.png']
 };
+
+final allSpecials = {
+  'alpaka': ['An Alpaka', 'Alpaka.png'],
+  'pot': ['A Flower Pot', 'Blumentopf.png'],
+  'david': ['David', 'David.png'],
+  'palm': ['Palm Tree', 'Palme.png'],
+  'pool': ['A Pool', 'Pool.png'],
+};

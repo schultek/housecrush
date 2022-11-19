@@ -7,6 +7,7 @@ import 'package:riverpod_context/riverpod_context.dart';
 import '../controllers/house_controller.dart';
 import '../domain/house.dart';
 import 'create/choose_scale.dart';
+import 'create/choose_specials.dart';
 
 class NewHouseScreen extends StatefulWidget {
   const NewHouseScreen({Key? key}) : super(key: key);
@@ -53,6 +54,15 @@ class _NewHouseScreenState extends State<NewHouseScreen> {
         creator: creator,
         onScale: (value) {
           creator.scale = value;
+          setState(() {
+            step++;
+          });
+        },);
+    } else if (step == 3) {
+      child = ChooseSpecials(
+        creator: creator,
+        onSpecials: (value) {
+          creator.specials = value;
           finish();
         },);
     } else {

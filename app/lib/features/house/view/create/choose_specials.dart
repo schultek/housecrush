@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:housecrush_app/features/house/domain/house.dart';
 import 'package:riverpod_context/riverpod_context.dart';
@@ -8,19 +9,19 @@ import '../../../common/view/action_button.dart';
 import '../../../common/view/back_button.dart';
 import '../../domain/locations.dart';
 
-class ChooseScale extends StatefulWidget {
-  ChooseScale({required this.creator, required this.onScale, Key? key})
+class ChooseSpecials extends StatefulWidget {
+  ChooseSpecials({required this.creator, required this.onSpecials, Key? key})
       : super(key: key);
 
   final HouseCreator creator;
-  final void Function(double) onScale;
+  final void Function(List<String>) onSpecials;
 
   @override
-  State<ChooseScale> createState() => _ChooseScaleState();
+  State<ChooseSpecials> createState() => _ChooseSpecialsState();
 }
 
-class _ChooseScaleState extends State<ChooseScale> {
-  double scale = 1;
+class _ChooseSpecialsState extends State<ChooseSpecials> {
+  List<String> specials = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class _ChooseScaleState extends State<ChooseScale> {
         children: [
           const GoBackButton(),
           Text(
-            'Set the scale.',
+            'Select Specials.',
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 40),
@@ -56,7 +57,7 @@ class _ChooseScaleState extends State<ChooseScale> {
                       ),
                       Positioned.fill(
                         child: Transform.scale(
-                          scale: scale,
+                          scale: widget.creator.scale,
                           alignment: Alignment.bottomCenter,
                           origin: Offset(0, -constraints.maxHeight / 3),
                           child: Image.network(
@@ -65,6 +66,13 @@ class _ChooseScaleState extends State<ChooseScale> {
                           ),
                         ),
                       ),
+                      for (var s in specials)
+                        Positioned.fill(
+                          child: Image.network(
+                            'https://housecrush.schultek.de/images/specials/${allSpecials[s]![1]}',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                     ],
                   );
                 }),
@@ -72,21 +80,24 @@ class _ChooseScaleState extends State<ChooseScale> {
             ),
           ),
           const SizedBox(height: 10),
-          Slider(
-            value: scale,
-            min: 0.2,
-            max: 3,
+          ChipsChoice<String>.multiple(
+            value: specials,
             onChanged: (value) {
               setState(() {
-                scale = value;
+                specials = value;
               });
             },
+            choiceCheckmark: true,
+            wrapped: true,
+            choiceItems: allSpecials.entries
+                .map((e) => C2Choice(value: e.key, label: e.value[0]))
+                .toList(),
           ),
           const SizedBox(height: 40),
           ActionButton(
-            label: 'Next',
+            label: 'Create',
             onPressed: () async {
-              widget.onScale(scale);
+              widget.onSpecials(specials);
             },
           ),
         ],
