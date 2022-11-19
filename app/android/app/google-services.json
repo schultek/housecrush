@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "95777783484",
+    "project_id": "housecrush-1428e",
+    "storage_bucket": "housecrush-1428e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95777783484:android:225989dd22f914407edab9",
+        "android_client_info": {
+          "package_name": "de.schultek.housecrush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95777783484-ioe6dhj5j2823r8e84ankju89d88q992.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW-0iHcJ6e6C_FtDWKkUttX0K3kQMJyR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95777783484-ioe6dhj5j2823r8e84ankju89d88q992.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "95777783484-lkjotsep2v2hfj7mr84s0ndmjm6edet0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.schultek.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
