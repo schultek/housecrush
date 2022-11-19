@@ -23,32 +23,47 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('HouseCrush'),
-      ),
-      body: Column(
-        children: [
-          if (context.watch(userNameRepository)?.isEmpty ?? true)
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'What\'s your name?',
-              ),
-              onChanged: (text) {
-                setState(() {
-                  name = text;
-                });
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(40),
+              child: Image.network('images/HouseCrushSchriftzug.png'),
             ),
-          const SizedBox(height: 10),
-          OutlinedButton(
-            onPressed: name.isNotEmpty
-                ? () {
-                    context.read(signInController.notifier).signIn(name);
-                  }
-                : null,
-            child: const Text('Sign In'),
-          ),
-        ],
+            const SizedBox(height: 100),
+            if (context.watch(userNameRepository)?.isEmpty ?? true)
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  hintText: 'What\'s your name?',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+                onChanged: (text) {
+                  setState(() {
+                    name = text;
+                  });
+                },
+              ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              style:ElevatedButton.styleFrom(
+                padding: EdgeInsets.all(16),
+                shape: const StadiumBorder(),
+                maximumSize: Size.infinite,
+              ),
+              onPressed: name.isNotEmpty
+                  ? () {
+                      context.read(signInController.notifier).signIn(name);
+                    }
+                  : null,
+              child: const Center(child: Text('Get Started')),
+            ),
+          ],
+        ),
       ),
     );
   }

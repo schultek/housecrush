@@ -55,6 +55,8 @@ const ColorSwatch hcRed = ColorSwatch(4294397511, {
   100: Color.fromRGBO(255, 237, 231, 1)
 });
 
+final Color hcOrange = Color(int.parse('ffff9400', radix: 16));
+
 final Color hcGreen = Color(int.parse('ff41C58D', radix: 16));
 final Color hcYellow = Color(int.parse('ffFFD43D', radix: 16));
 

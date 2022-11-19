@@ -27,6 +27,7 @@ class DiscoverPage extends StatelessWidget {
               ),
             ),
             const SliverPadding(padding: EdgeInsets.only(top: 20)),
+
             SliverGrid.count(
               crossAxisCount: 2,
               mainAxisSpacing: 20,

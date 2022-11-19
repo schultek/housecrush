@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 final hcTheme = ThemeData(
-  colorSchemeSeed: hcRed[600],
+  colorSchemeSeed: hcOrange,
   fontFamily: 'Axel',
   hintColor: Colors.white24,
   canvasColor: hcDark[500],
