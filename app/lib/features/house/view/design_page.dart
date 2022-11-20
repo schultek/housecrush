@@ -1,11 +1,14 @@
 import 'package:beamer/beamer.dart';
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:housecrush_app/constants/colors.dart';
+import 'package:housecrush_app/constants/theme.dart';
 import 'package:housecrush_app/features/house/data/houses_repository.dart';
 import 'package:housecrush_app/features/profile/data/profile_repository.dart';
 import 'package:riverpod_context/riverpod_context.dart';
 
+import '../../../main.dart';
 import '../../profile/view/profile_button.dart';
 import '../controllers/house_controller.dart';
 import 'house_card.dart';
@@ -33,10 +36,22 @@ class DesignPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                context.watch(hasProfileRepository).valueOrNull ?? false
-                          ? const ProfileButton()
-                          : const SizedBox(height: 32),
-
+                Row(children: [
+                  context.watch(hasProfileRepository).valueOrNull ?? false
+                      ? const ProfileButton()
+                      : const SizedBox(height: 32),
+                  const Spacer(),
+                  DayNightSwitcherIcon(
+                    nightBackgroundColor:
+                        hcThemeDark.colorScheme.surfaceVariant,
+                    dayBackgroundColor: hcTheme.colorScheme.surfaceVariant,
+                    isDarkModeEnabled: context.watch(darkModeEnabledProvider),
+                    onStateChanged: (isDarkModeEnabled) {
+                      context.read(darkModeEnabledProvider.notifier).state =
+                          isDarkModeEnabled;
+                    },
+                  ),
+                ]),
                 const SizedBox(height: 10),
                 Text(
                   'Design your Dream House.',
@@ -74,7 +89,9 @@ class DesignPage extends StatelessWidget {
                         },
                         child: AspectRatio(
                           aspectRatio: 1,
-                          child: Hero(tag: 'hero-${house.id}',child: HouseCard(house: house)),
+                          child: Hero(
+                              tag: 'hero-${house.id}',
+                              child: HouseCard(house: house)),
                         ),
                       ),
                     ),

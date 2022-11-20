@@ -32,7 +32,7 @@ class MainLayout extends StatelessWidget {
   final List<PageBuilder> pages = [
     () => const DesignPage(),
     () => const DiscoverPage(),
-    () => const FriendsPage(),
+    //() => const FriendsPage(),
   ];
 
   @override
@@ -47,7 +47,7 @@ class MainLayout extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: hcRed,
         //unselectedItemColor: hcLight[400],
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         currentIndex: currentPageIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -63,10 +63,10 @@ class MainLayout extends StatelessWidget {
             label: 'Discover',
             icon: Icon(Icons.explore),
           ),
-          BottomNavigationBarItem(
-            label: 'Friends',
-            icon: Icon(Icons.groups),
-          ),
+          // BottomNavigationBarItem(
+          //   label: 'Friends',
+          //   icon: Icon(Icons.groups),
+          // ),
         ],
         onTap: (v) => changePage(context, v),
       ),

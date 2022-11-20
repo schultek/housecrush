@@ -37,6 +37,7 @@ class HouseScreen extends StatelessWidget {
   }
 
   Widget buildHouseData(BuildContext context, House house) {
+    var descStyle = TextStyle(fontWeight: FontWeight.normal, fontSize: 15);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -66,7 +67,6 @@ class HouseScreen extends StatelessWidget {
                   if (ownerName != null)
                     Text('by ${ownerName}', style: TextStyle(fontWeight: FontWeight.bold),),
 
-
                   const SizedBox(height: 20),
                   if (houseWithLoan != null) ...[
                     const SizedBox(height: 10),
@@ -89,18 +89,19 @@ class HouseScreen extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: hcDark[200],
+                          color: Theme.of(context).colorScheme.surfaceVariant,
                         ),
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Found loan by ${houseWithLoan.bank} over'),
+                            Text('Found loan by ${houseWithLoan.bank} over',
+                            style: descStyle),
                             Text(
                               '${houseWithLoan.loan!.toStringAsFixed(0)} €',
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            const Text('with a monthly payment of'),
+                            Text('with a monthly payment of', style: descStyle),
                             Row(
                               children: [
                                 Text(
@@ -109,7 +110,7 @@ class HouseScreen extends StatelessWidget {
                                       Theme.of(context).textTheme.displayMedium,
                                 ),
                                 const SizedBox(width: 5),
-                                const Text('over'),
+                                Text('over', style: descStyle),
                                 const SizedBox(width: 5),
                                 Text(
                                   houseWithLoan.loanYears!.toStringAsFixed(0),
@@ -117,7 +118,7 @@ class HouseScreen extends StatelessWidget {
                                       Theme.of(context).textTheme.displayMedium,
                                 ),
                                 const SizedBox(width: 5),
-                                const Text('years'),
+                                Text('years', style: descStyle),
                               ],
                             ),
                           ],
@@ -128,14 +129,14 @@ class HouseScreen extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: hcDark[200],
+                          color: Theme.of(context).colorScheme.surfaceVariant,
                         ),
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: [
                             Text('Based on ${ownerName != null ? '${ownerName}s' : 'your'} income profile, '
                                 '${ownerName ?? 'you'} may '
-                                'be able to afford this loan in about'),
+                                'be able to afford this loan in about', style: descStyle),
                             Row(
                               children: [
                                 Text(
@@ -145,11 +146,11 @@ class HouseScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                    'year${houseWithLoan.waitYears! > 1 ? 's' : ''}.'),
+                                    'year${houseWithLoan.waitYears! > 1 ? 's' : ''}.', style: descStyle),
                               ],
                             ),
                             const SizedBox(height: 10),
-                            scoreGraph(houseWithLoan),
+                            scoreGraph(context, houseWithLoan),
                             const SizedBox(height: 8),
                             if (ownerName == null)
                             Text(
@@ -203,9 +204,12 @@ class HouseScreen extends StatelessWidget {
       if (house.isLoading) {
         return Row(
           children: const [
-            Text(
-              'Loading loan details...',
-              style: TextStyle(color: Colors.black45),
+            Opacity(
+              opacity: 0.6,
+              child: Text(
+                'Loading loan details...',
+                style: TextStyle(fontSize: 12),
+              ),
             ),
             SizedBox(width: 10),
             SizedBox(
@@ -221,50 +225,52 @@ class HouseScreen extends StatelessWidget {
     });
   }
 
-  Widget scoreGraph(House houseWithLoan) {
+  Widget scoreGraph(BuildContext context, House houseWithLoan) {
     var score = houseWithLoan.score;
+
+    var stepTitleStyle = TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12, fontWeight: FontWeight.bold);
 
     return AnotherStepper(
       activeIndex: 3,
-      activeBarColor: hcDark[300]!,
+      activeBarColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
       barThickness: 3,
       stepperList: [
         StepperData(
-          title: StepperText('Realist'),
+          title: StepperText('Realist', textStyle: stepTitleStyle),
           iconWidget: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: score == 0 ? Colors.green : hcDark[300],
+                color: score == 0 ? Colors.green : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
                 borderRadius: const BorderRadius.all(Radius.circular(30))),
             child: score == 0 ? const Center(child: Text('🥸')) : null,
           ),
         ),
         StepperData(
-          title: StepperText('Optimist'),
+          title: StepperText('Optimist', textStyle: stepTitleStyle),
           iconWidget: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: score == 1 ? Colors.green : hcDark[300],
+                color: score == 1 ? Colors.green : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
                 borderRadius: const BorderRadius.all(Radius.circular(30))),
             child: score == 1 ? const Center(child: Text('😇')) : null,
           ),
         ),
         StepperData(
-          title: StepperText('Dreamer'),
+          title: StepperText('Dreamer', textStyle: stepTitleStyle),
           iconWidget: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: score == 2 ? Colors.green : hcDark[300],
+                color: score == 2 ? Colors.green : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
                 borderRadius: const BorderRadius.all(Radius.circular(30))),
             child: score == 2 ? const Center(child: Text('😶‍🌫️')) : null,
           ),
         ),
         StepperData(
-          title: StepperText('Idiot'),
+          title: StepperText('Idiot', textStyle: stepTitleStyle),
           iconWidget: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: score == 3 ? Colors.green : hcDark[300],
+                color: score == 3 ? Colors.green : Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
                 borderRadius: const BorderRadius.all(Radius.circular(30))),
             child: score == 3 ? const Center(child: Text('🥴')) : null,
           ),

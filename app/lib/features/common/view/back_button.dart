@@ -20,7 +20,7 @@ class GoBackButton extends StatelessWidget {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Material(
-              color: hcDark[300],
+              color: Theme.of(context).colorScheme.surfaceVariant,
               child: InkWell(
                 onTap: () {
                   if (back != null) {

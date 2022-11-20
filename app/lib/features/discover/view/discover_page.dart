@@ -64,7 +64,7 @@ class DiscoverPage extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
-                              color: hcDark[200]!.withOpacity(0.4),
+                              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(

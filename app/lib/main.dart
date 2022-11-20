@@ -20,6 +20,8 @@ void main() async {
   ));
 }
 
+final darkModeEnabledProvider = StateProvider((ref) => false);
+
 class HouseCrushApp extends StatelessWidget {
   const HouseCrushApp({Key? key}) : super(key: key);
 
@@ -30,6 +32,8 @@ class HouseCrushApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'HouseCrush 🏠💔',
         theme: hcTheme,
+        darkTheme: hcThemeDark,
+        themeMode: context.watch(darkModeEnabledProvider) ? ThemeMode.dark : ThemeMode.light,
         routerDelegate: context.watch(routerDelegateProvider),
         routeInformationParser: BeamerParser(),
         backButtonDispatcher: context.watch(backButtonDispatcherProvider),

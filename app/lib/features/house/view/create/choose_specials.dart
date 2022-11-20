@@ -79,7 +79,7 @@ class _ChooseSpecialsState extends State<ChooseSpecials> {
           ),
           const SizedBox(height: 40),
           ActionButton(
-            label: 'Create',
+            label: 'Next',
             onPressed: () async {
               widget.onSpecials(specials);
             },
